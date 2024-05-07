@@ -7,7 +7,7 @@ namespace Pest\PluginName;
 use Pest\Plugin;
 use PHPUnit\Framework\TestCase;
 
-Plugin::uses(Example::class);
+Plugin::uses(RouteTesting::class);
 
 /**
  * @return TestCase

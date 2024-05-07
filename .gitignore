@@ -9,3 +9,4 @@ coverage.xml
 .temp/coverage.php
 *.swp
 *.swo
+.phpunit.cache

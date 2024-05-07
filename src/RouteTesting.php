@@ -9,12 +9,9 @@ use PHPUnit\Framework\TestCase;
 /**
  * @internal
  */
-trait Example
+trait RouteTesting
 {
-    /**
-     * Example description.
-     */
-    public function example(string $name): TestCase
+    public function routeTesting(string $name): TestCase
     {
         expect($name)->toBeString();
 

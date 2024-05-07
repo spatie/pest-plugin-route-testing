@@ -1,6 +1,6 @@
 {
-    "name": "pestphp/pest-plugin-template",
-    "description": "My awesome plugin",
+    "name": "spatie/pest-plugin-route-testing",
+    "description": "A Pest Plugin to test the health of your routes",
     "keywords": [
         "php",
         "framework",
@@ -8,13 +8,17 @@
         "unit",
         "test",
         "testing",
-        "plugin"
+        "plugin",
+        "spatie"
     ],
     "license": "MIT",
     "require": {
         "php": "^8.1",
         "pestphp/pest": "^2.5",
         "pestphp/pest-plugin": "^2.0.1"
+    },
+    "require-dev": {
+        "pestphp/pest-dev-tools": "^2.9"
     },
     "autoload": {
         "psr-4": {
@@ -23,9 +27,6 @@
         "files": [
             "src/Autoload.php"
         ]
-    },
-    "require-dev": {
-        "pestphp/pest-dev-tools": "^2.9"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
