@@ -2,17 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Pest\PluginName;
+namespace Spatie\RouteTesting;
 
 use Pest\Plugin;
 use PHPUnit\Framework\TestCase;
 
 Plugin::uses(RouteTesting::class);
 
-/**
- * @return TestCase
- */
-function example(string $argument)
+function routeTesting(string $argument): TestCase
 {
-    return test()->example(...func_get_args()); // @phpstan-ignore-line
+    return test()->routeTesting(...func_get_args()); // @phpstan-ignore-line
 }

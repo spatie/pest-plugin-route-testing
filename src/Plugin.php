@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Pest\PluginName;
+namespace Spatie\RouteTesting;
 
 // use Pest\Contracts\Plugins\AddsOutput;
 // use Pest\Contracts\Plugins\HandlesArguments;

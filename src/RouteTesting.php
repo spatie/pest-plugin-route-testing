@@ -2,16 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Pest\PluginName;
-
-use PHPUnit\Framework\TestCase;
+namespace Spatie\RouteTesting;
 
 /**
  * @internal
  */
 trait RouteTesting
 {
-    public function routeTesting(string $name): TestCase
+    public function routeTesting(string $name): static
     {
         expect($name)->toBeString();
 
