@@ -1,4 +1,4 @@
-# Tests your routes with PestPHP
+# Make sure all routes in your Laravel app are ok
 
 This package provides a simple way to test your application's routes with PestPHP.
 
