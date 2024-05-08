@@ -1,17 +1,22 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Spatie\RouteTesting;
 
-/**
- * @internal
- */
-trait RouteTesting
+use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Support\Facades\Route;
+
+class RouteTesting
 {
-    public function routeTesting(string $name): static
+    public function with(string $binding, mixed $modelOrCollection): static
     {
-        expect($name)->toBeString();
+        Route::bind($binding, fn () => $modelOrCollection);
+
+        return $this;
+    }
+
+    public function actingAs(Authenticatable $user, string $guard = null): static
+    {
+        test()->actingAs($user, $guard);
 
         return $this;
     }

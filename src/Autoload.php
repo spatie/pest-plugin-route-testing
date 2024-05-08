@@ -7,9 +7,11 @@ namespace Spatie\RouteTesting;
 use Pest\Plugin;
 use PHPUnit\Framework\TestCase;
 
-Plugin::uses(RouteTesting::class);
+Plugin::uses(RouteTestable::class);
 
-function routeTesting(string $argument): TestCase
-{
-    return test()->routeTesting(...func_get_args()); // @phpstan-ignore-line
+if (! function_exists('routeTesting')) {
+    function routeTesting(): RouteTesting
+    {
+        return test()->routeTesting(...func_get_args()); // @phpstan-ignore-line
+    }
 }
