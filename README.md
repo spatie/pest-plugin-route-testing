@@ -12,7 +12,11 @@ routeTesting()
     ->with('post', Post::factory()->create())
     ->exclude(['/api/comments/*'])
     ->test()
-    ->assertOk();
+    ->assertHasJsonApiPagination()
+    ->assertOk()
+     ->assert(function(Response $response) {
+        // Custom assertions
+    });;
 ```
 
 ## Support us
