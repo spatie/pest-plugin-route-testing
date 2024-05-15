@@ -46,12 +46,11 @@
     "scripts": {
         "refacto": "rector",
         "lint": "pint",
-        "test:refacto": "rector --dry-run",
+        "rector": "rector --dry-run",
         "test:lint": "pint --test",
         "test:types": "phpstan analyse --ansi",
         "test:unit": "pest --colors=always",
         "test": [
-            "@test:refacto",
             "@test:lint",
             "@test:types",
             "@test:unit"
