@@ -45,6 +45,7 @@
     },
     "scripts": {
         "analyse": "./vendor/bin/phpstan analyse",
+        "baseline": "./vendor/bin/phpstan analyse --generate-baseline",
         "lint": "pint",
         "rector": "./vendor/bin/rector --dry-run",
         "test": "./vendor/bin/pest --compact"

@@ -7,8 +7,8 @@ use Spatie\RouteTesting\RouteTesting;
 use function Spatie\RouteTesting\routeTesting;
 
 it('only checks GET endpoints', function () {
-    Route::get('/valid-endpoint', fn () => '');
-    Route::post('/valid-endpoint', fn () => '');
+    Route::get('/get-endpoint', fn () => '');
+    Route::post('/post-endpoint', fn () => '');
 
     $class = routeTesting()
         ->test();
@@ -16,6 +16,10 @@ it('only checks GET endpoints', function () {
     expect($class)
         ->toBeInstanceOf(RouteTesting::class)
         ->routes->toHaveCount(1);
+
+    expect($class->routes)
+        ->toHaveKey('get-endpoint')
+        ->not->toHaveKey('post-endpoint');
 });
 
 it('can bind a model to a route', function () {

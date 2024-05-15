@@ -1,5 +1,5 @@
 includes:
-    - vendor/phpstan/phpstan-strict-rules/rules.neon
+    - phpstan-baseline.neon
     - vendor/thecodingmachine/phpstan-strict-rules/phpstan-strict-rules.neon
 
 parameters:
