@@ -1,6 +1,6 @@
 <?php
 
-namespace TestClasses;
+namespace Tests\TestClasses;
 
 use Illuminate\Contracts\Auth\Authenticatable;
 
