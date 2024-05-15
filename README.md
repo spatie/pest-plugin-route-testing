@@ -13,7 +13,6 @@ routeTesting()
     ->exclude(['/api/comments/*'])
     ->test()
     ->assertHasJsonApiPagination()
-    ->assertOk()
      ->assert(function(Response $response) {
         // Custom assertions
     });;

@@ -14,11 +14,11 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
-        "illuminate/support": "^11.7",
         "pestphp/pest": "^2.5",
         "pestphp/pest-plugin": "^2.0.1"
     },
     "require-dev": {
+        "orchestra/testbench": "^8.22",
         "pestphp/pest-dev-tools": "^2.9"
     },
     "autoload": {
@@ -28,6 +28,11 @@
         "files": [
             "src/Autoload.php"
         ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
     },
     "minimum-stability": "dev",
     "prefer-stable": true,

@@ -5,17 +5,21 @@ namespace Spatie\RouteTesting;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Route as RouteFacade;
+//use Illuminate\Routing\Router as RouteFacade;
 use Illuminate\Testing\TestResponse;
 
-class RouteTesting
+final class RouteTesting
 {
-    protected array $bindings = [];
+    private array $bindings = [];
 
-    protected array $routes = [];
+    private array $routes = [];
 
-    protected array $excludedRoutes = [];
-
-    protected array $routesWithUnfilledBindings = [];
+    private array $excludedRoutes = [];
+    private const ROUTES_WITH_UNFILLED_BINDINGS = [];
+    /**
+     * @var int[]
+     */
+    private const CODES = [200];
 
     public function __construct()
     {
@@ -50,8 +54,8 @@ class RouteTesting
         // @todo ignore routes with unfilled bindings
 
         collect($this->routes)
-            ->reject(fn ($route) => in_array($route->uri, $this->excludedRoutes))
-            ->each(function (Route $route) {
+            ->reject(fn ($route): bool => in_array($route->uri, $this->excludedRoutes))
+            ->each(function (Route $route): void {
                 $this->assertOkResponse($route, test()->get($route->uri()));
                 $this->assertOkResponse($route, test()->getJson($route->uri()));
             });
@@ -59,11 +63,7 @@ class RouteTesting
         return $this;
     }
 
-    protected function ignoreRoutesWithUnfilledBindings(Route $route)
-    {
-    }
-
-    protected function assertOkResponse(Route $route, TestResponse $response): void
+    private function assertOkResponse(Route $route, TestResponse $response): void
     {
         if ($response->isRedirect()) {
             $response->assertRedirect();
@@ -72,11 +72,9 @@ class RouteTesting
         }
 
         if (property_exists($response->baseResponse, 'exception')
-            && str_starts_with(optional($response->exception)->getMessage(), 'Call to undefined method ')) {
+            && str_starts_with((string) optional($response->exception)->getMessage(), 'Call to undefined method ')) {
             return;
         }
-
-        $codes = [200];
 
         if ($response->getStatusCode() === 500) {
             dump($route->uri());
@@ -84,7 +82,7 @@ class RouteTesting
         }
 
         expect($response->getStatusCode())
-            ->toBeIn($codes, "Route {$route->uri()} {$route->getActionName()} returned {$response->getStatusCode()}.");
+            ->toBeIn(self::CODES, "Route {$route->uri()} {$route->getActionName()} returned {$response->getStatusCode()}.");
 
     }
 }
