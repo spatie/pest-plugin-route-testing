@@ -10,9 +10,6 @@ use function Spatie\RouteTesting\routeTesting;
 routeTesting()
     ->excluding(['/api/comments/*'])
     ->bind('post', Post::factory()->create())
-    ->ensuring(function(Response $response) {
-        // Custom assertions
-    })->verifyJsonApiPagination()
     ->toReturnSuccesfullResponse();
 ```
 
