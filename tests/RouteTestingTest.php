@@ -10,7 +10,7 @@ it('only checks GET endpoints', function () {
     Route::get('/get-endpoint', fn () => '');
     Route::post('/post-endpoint', fn () => '');
 
-    $class = routeTesting()->assert();
+    $class = routeTesting()->toReturnSuccessfulResponse();
 
     expect($class)->toBeInstanceOf(RouteTesting::class);
 
@@ -26,8 +26,8 @@ it('can bind a model to a route', function () {
     $model = new TestModel();
 
     $class = routeTesting()
-        ->with('user', $model)
-        ->assert();
+        ->bind('user', $model)
+        ->toReturnSuccessfulResponse();
 
     expect($class)->toBeInstanceOf(RouteTesting::class);
 
@@ -45,8 +45,8 @@ it('can exclude routes', function () {
     Route::get('/excluded-endpoint', fn () => '');
 
     $class = routeTesting()
-        ->exclude(['excluded-endpoint'])
-        ->assert();
+        ->excluding(['excluded-endpoint'])
+        ->toReturnSuccessfulResponse();
 
     expect($class->assertedRoutes)
         ->toHaveCount(1)
@@ -57,9 +57,9 @@ it('can exclude routes', function () {
 it('can act as a user for authenticated routes', function () {
     Route::middleware('auth')->get('/authenticated-endpoint', fn () => '');
 
-    expect(fn () => routeTesting()->assert())
+    expect(fn () => routeTesting()->toReturnSuccessfulResponse())
         ->toThrow(\Illuminate\Http\Exceptions\HttpResponseException::class);
 
     test()->actingAs(new TestUser());
-    routeTesting()->assert();
+    routeTesting()->toReturnSuccessfulResponse();
 });

@@ -22,7 +22,7 @@ class RouteTesting
         $this->routes = RouteFacade::getRoutes()->getRoutesByMethod()['GET'];
     }
 
-    public function with(string $binding, mixed $modelOrCollection): static
+    public function bind(string $binding, mixed $modelOrCollection): static
     {
         RouteFacade::bind($binding, fn () => $modelOrCollection);
 
@@ -30,14 +30,14 @@ class RouteTesting
     }
 
     /** @param array<string> $routes */
-    public function exclude(array $routes): static
+    public function excluding(array $routes): static
     {
         $this->excludedRoutes = array_merge($this->excludedRoutes, $routes);
 
         return $this;
     }
 
-    public function assert(): static
+    public function toReturnSuccessfulResponse(): static
     {
         $this->assertedRoutes = collect($this->routes)
             ->reject(function (Route $route, string $name) {

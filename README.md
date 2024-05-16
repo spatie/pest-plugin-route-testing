@@ -8,14 +8,12 @@ Here's a quick example:
 use function Spatie\RouteTesting\routeTesting;
 
 routeTesting()
-    ->actingAs(User::factory()->create(), 'api')
-    ->with('post', Post::factory()->create())
-    ->exclude(['/api/comments/*'])
-    ->assert()
-    ->assertHasJsonApiPagination()
-     ->assert(function(Response $response) {
+    ->excluding(['/api/comments/*'])
+    ->bind('post', Post::factory()->create())
+    ->ensuring(function(Response $response) {
         // Custom assertions
-    });;
+    })->verifyJsonApiPagination()
+    ->toReturnSuccesfullResponse();
 ```
 
 ## Support us
