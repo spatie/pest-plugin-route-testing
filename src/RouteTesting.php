@@ -4,6 +4,7 @@ namespace Spatie\RouteTesting;
 
 use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Route as RouteFacade;
+use Illuminate\Support\Str;
 use Illuminate\Testing\TestResponse;
 
 class RouteTesting
@@ -22,6 +23,12 @@ class RouteTesting
 
     /** @var array<string> */
     public array $ignoredRoutes = [];
+
+    /** @var array<string>  */
+    protected array $defaultIgnoredRoutes = [
+        '_ignition',
+        '_debugbar',
+    ];
 
     public function __construct()
     {
@@ -48,17 +55,8 @@ class RouteTesting
     public function toReturnSuccessfulResponse(): static
     {
         $this->assertedRoutes = collect($this->routes)
-            ->reject(function (Route $route, string $name) {
-                if ($this->isExcluded($name)) {
-                    return true;
-                }
-
-                if ($this->hasUnknownBindings($route)) {
-                    return true;
-                }
-
-                return false;
-            })->each(function (Route $route): void {
+            ->reject(fn (Route $route) => $this->shouldIgnoreRoute($route))
+            ->each(function (Route $route): void {
                 $this->assertOkResponse($route, test()->get($route->uri()));
                 $this->assertOkResponse($route, test()->getJson($route->uri()));
             })->toArray();
@@ -68,6 +66,23 @@ class RouteTesting
         }
 
         return $this;
+    }
+
+    protected function shouldIgnoreRoute(Route $route): bool
+    {
+        if (Str::startsWith($route->uri(), $this->defaultIgnoredRoutes)) {
+            return true;
+        }
+
+        if ($this->isExcluded($route->uri())) {
+            return true;
+        }
+
+        if ($this->hasUnknownBindings($route)) {
+            return true;
+        }
+
+        return false;
     }
 
     protected function isExcluded(string $name): bool

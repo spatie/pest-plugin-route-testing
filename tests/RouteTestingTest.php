@@ -94,6 +94,21 @@ it('can exclude routes based on a wildcard', function () {
         ->toHaveKey('get-endpoint');
 });
 
+it('ignores some routes by default', function () {
+    Route::get('/_ignition', fn () => '');
+    Route::get('/_debugbar', fn () => '');
+
+    $class = routeTesting()->toReturnSuccessfulResponse();
+
+    expect($class->assertedRoutes)
+        ->toHaveCount(0);
+
+    // We don't want to notify the user about the default ignored routes
+    expect($class->ignoredRoutes)
+        ->toHaveCount(0);
+
+});
+
 it('can act as a user for authenticated routes', function () {
     Route::middleware('auth')->get('/authenticated-endpoint', fn () => '');
 
