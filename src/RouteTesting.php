@@ -2,16 +2,12 @@
 
 namespace Spatie\RouteTesting;
 
-use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Route as RouteFacade;
 use Illuminate\Testing\TestResponse;
 
 class RouteTesting
 {
-    /** @var array<string> */
-    protected array $bindings = [];
-
     /** @var array<string, Route>  */
     protected array $routes = [];
 
@@ -30,16 +26,6 @@ class RouteTesting
     {
         RouteFacade::bind($binding, fn () => $modelOrCollection);
 
-        $this->bindings = array_merge($this->bindings, [$binding]);
-
-        return $this;
-    }
-
-    /** @todo get this working */
-    public function actingAs(Authenticatable $user, string $guard = null): static
-    {
-        //test()->actingAs($user, $guard);
-
         return $this;
     }
 
@@ -51,7 +37,7 @@ class RouteTesting
         return $this;
     }
 
-    public function test(): static
+    public function assert(): static
     {
         $this->assertedRoutes = collect($this->routes)
             ->reject(function (Route $route, string $name) {
@@ -81,7 +67,6 @@ class RouteTesting
         $codes = [200];
 
         if ($response->getStatusCode() === 500) {
-            dump($route->uri());
             $response->throwResponse();
         }
 

@@ -11,7 +11,7 @@ routeTesting()
     ->actingAs(User::factory()->create(), 'api')
     ->with('post', Post::factory()->create())
     ->exclude(['/api/comments/*'])
-    ->test()
+    ->assert()
     ->assertHasJsonApiPagination()
      ->assert(function(Response $response) {
         // Custom assertions
