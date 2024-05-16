@@ -14,3 +14,8 @@ parameters:
 			message: "#^Parameter \\#1 \\$haystack of function str_starts_with expects string, string\\|null given\\.$#"
 			count: 1
 			path: src/RouteTesting.php
+
+		-
+			message: "#^Property Spatie\\\\RouteTesting\\\\RouteTesting\\:\\:\\$assertedRoutes \\(array\\<string, Illuminate\\\\Routing\\\\Route\\>\\) does not accept array\\<string, mixed\\>\\.$#"
+			count: 1
+			path: src/RouteTesting.php

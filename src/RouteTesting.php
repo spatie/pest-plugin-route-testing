@@ -13,13 +13,13 @@ class RouteTesting
     protected array $bindings = [];
 
     /** @var array<string, Route>  */
-    public array $routes = [];
+    protected array $routes = [];
 
     /** @var array<string> */
     protected array $excludedRoutes = [];
 
-    /** @var array<string> */
-    protected array $routesWithUnfilledBindings = [];
+    /** @var array<string, Route>  */
+    public array $assertedRoutes = [];
 
     public function __construct()
     {
@@ -43,7 +43,6 @@ class RouteTesting
         return $this;
     }
 
-    /** @todo get this working */
     /** @param array<string> $routes */
     public function exclude(array $routes): static
     {
@@ -52,29 +51,18 @@ class RouteTesting
         return $this;
     }
 
-    /** @todo can we execute the assertions without having to call ->test() ? */
     public function test(): static
     {
-        // @todo ignore routes with unfilled bindings
-
-        collect($this->routes)
-            ->reject(fn ($route): bool => in_array($route->uri, $this->excludedRoutes, true))
-            ->each(function (Route $route): void {
+        $this->assertedRoutes = collect($this->routes)
+            ->reject(function (Route $route, string $name) {
+                // @todo ignore routes with unfilled bindings
+                return in_array($name, $this->excludedRoutes, true);
+            })->each(function (Route $route): void {
                 $this->assertOkResponse($route, test()->get($route->uri()));
                 $this->assertOkResponse($route, test()->getJson($route->uri()));
-            });
+            })->toArray();
 
         return $this;
-    }
-
-    /** @todo */
-    protected function ignoreRoutesWithUnfilledBindings(): void
-    {
-        // @todo can we display to the user how many routes we had to ignore?
-        $this->routesWithUnfilledBindings = array_merge(
-            $this->routesWithUnfilledBindings,
-            []
-        );
     }
 
     protected function assertOkResponse(Route $route, TestResponse $response): void

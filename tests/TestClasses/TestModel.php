@@ -2,7 +2,9 @@
 
 namespace Tests\TestClasses;
 
-class TestModel
+use Illuminate\Database\Eloquent\Model;
+
+class TestModel extends Model
 {
 
 }
