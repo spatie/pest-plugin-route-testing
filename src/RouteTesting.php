@@ -8,6 +8,9 @@ use Illuminate\Testing\TestResponse;
 
 class RouteTesting
 {
+    /** @var array<string> */
+    protected array $bindings = [];
+
     /** @var array<string, Route>  */
     protected array $routes = [];
 
@@ -26,6 +29,8 @@ class RouteTesting
     {
         RouteFacade::bind($binding, fn () => $modelOrCollection);
 
+        $this->bindings = array_merge($this->bindings, [$binding]);
+
         return $this;
     }
 
@@ -41,8 +46,11 @@ class RouteTesting
     {
         $this->assertedRoutes = collect($this->routes)
             ->reject(function (Route $route, string $name) {
-                // @todo ignore routes with unfilled bindings
                 if ($this->isExcluded($name)) {
+                    return true;
+                }
+
+                if ($this->hasUnknownBindings($route)) {
                     return true;
                 }
 
@@ -65,6 +73,21 @@ class RouteTesting
             }
         }
         return false;
+    }
+
+    protected function hasUnknownBindings(Route $route): bool
+    {
+        if (! str_contains($route->uri, '{')) {
+            return false;
+        }
+
+        $bindingName = substr($route->uri, strpos($route->uri, '{') + 1, strpos($route->uri, '}') - strpos($route->uri, '{') - 1);
+
+        if (in_array($bindingName, $this->bindings, true)) {
+            return false;
+        }
+
+        return true;
     }
 
     protected function assertOkResponse(Route $route, TestResponse $response): void

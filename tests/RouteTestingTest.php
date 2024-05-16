@@ -6,7 +6,7 @@ use Spatie\RouteTesting\RouteTesting;
 use Tests\TestClasses\TestUser;
 use function Spatie\RouteTesting\routeTesting;
 
-it('only checks GET endpoints', function () {
+it('only checks for GET endpoints', function () {
     Route::get('/get-endpoint', fn () => '');
     Route::post('/post-endpoint', fn () => '');
 
@@ -38,6 +38,15 @@ it('can bind a model to a route', function () {
     $firstRoute = $class->assertedRoutes['{user}'];
 
     // @todo is there a way to verify if the binding is set?
+});
+
+it('can exclude routes with unknown bindings', function () {
+    Route::get('{user}', fn () => '');
+
+    $class = routeTesting()->toReturnSuccessfulResponse();
+
+    expect($class->assertedRoutes)
+        ->toHaveCount(0);
 });
 
 it('can exclude routes', function () {
