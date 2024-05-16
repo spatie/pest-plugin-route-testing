@@ -47,6 +47,10 @@ it('can exclude routes with unknown bindings', function () {
 
     expect($class->assertedRoutes)
         ->toHaveCount(0);
+
+    expect($class->ignoredRoutes)
+        ->toHaveCount(1)
+        ->toContain('{user}');
 });
 
 it('can exclude routes', function () {

@@ -20,6 +20,9 @@ class RouteTesting
     /** @var array<string, Route>  */
     public array $assertedRoutes = [];
 
+    /** @var array<string> */
+    public array $ignoredRoutes = [];
+
     public function __construct()
     {
         $this->routes = RouteFacade::getRoutes()->getRoutesByMethod()['GET'];
@@ -60,6 +63,10 @@ class RouteTesting
                 $this->assertOkResponse($route, test()->getJson($route->uri()));
             })->toArray();
 
+        if (count($this->ignoredRoutes) > 0) {
+            dump('Ignored routes: ' . count($this->ignoredRoutes));
+        }
+
         return $this;
     }
 
@@ -86,6 +93,8 @@ class RouteTesting
         if (in_array($bindingName, $this->bindings, true)) {
             return false;
         }
+
+        $this->ignoredRoutes = array_merge($this->ignoredRoutes, [$route->uri]);
 
         return true;
     }
