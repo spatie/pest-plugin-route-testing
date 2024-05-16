@@ -42,13 +42,29 @@ class RouteTesting
         $this->assertedRoutes = collect($this->routes)
             ->reject(function (Route $route, string $name) {
                 // @todo ignore routes with unfilled bindings
-                return in_array($name, $this->excludedRoutes, true);
+                if ($this->isExcluded($name)) {
+                    return true;
+                }
+
+                return false;
             })->each(function (Route $route): void {
                 $this->assertOkResponse($route, test()->get($route->uri()));
                 $this->assertOkResponse($route, test()->getJson($route->uri()));
             })->toArray();
 
         return $this;
+    }
+
+    protected function isExcluded(string $name): bool
+    {
+        foreach ($this->excludedRoutes as $excludedRoute) {
+            $pattern = str_replace('\*', '.*', preg_quote($excludedRoute, '/'));
+
+            if (preg_match('/^' . $pattern . '$/', $name)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     protected function assertOkResponse(Route $route, TestResponse $response): void

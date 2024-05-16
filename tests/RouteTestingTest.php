@@ -50,8 +50,35 @@ it('can exclude routes', function () {
 
     expect($class->assertedRoutes)
         ->toHaveCount(1)
-        ->toHaveKey('get-endpoint')
-        ->not->toHaveKey('post-endpoint');
+        ->toHaveKey('get-endpoint');
+});
+
+it('can exclude multiple routes', function () {
+    Route::get('/get-endpoint', fn () => '');
+    Route::get('/excluded-endpoint', fn () => '');
+    Route::get('/2-excluded-endpoint', fn () => '');
+
+    $class = routeTesting()
+        ->excluding(['excluded-endpoint', '2-excluded-endpoint'])
+        ->toReturnSuccessfulResponse();
+
+    expect($class->assertedRoutes)
+        ->toHaveCount(1)
+        ->toHaveKey('get-endpoint');
+});
+
+it('can exclude routes based on a wildcard', function () {
+    Route::get('/get-endpoint', fn () => '');
+    Route::get('/excluded-endpoint', fn () => '');
+    Route::get('/excluded-endpoint-2', fn () => '');
+
+    $class = routeTesting()
+        ->excluding(['excluded-*'])
+        ->toReturnSuccessfulResponse();
+
+    expect($class->assertedRoutes)
+        ->toHaveCount(1)
+        ->toHaveKey('get-endpoint');
 });
 
 it('can act as a user for authenticated routes', function () {
