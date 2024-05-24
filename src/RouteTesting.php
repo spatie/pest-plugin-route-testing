@@ -9,8 +9,11 @@ use Illuminate\Testing\TestResponse;
 
 class RouteTesting
 {
+    /** @var array<string, Route>  */
+    public array $assertedRoutes = [];
+
     /** @var array<string> */
-    protected array $bindings = [];
+    public array $ignoredRoutes = [];
 
     /** @var array<string, Route>  */
     protected array $routes = [];
@@ -18,17 +21,17 @@ class RouteTesting
     /** @var array<string> */
     protected array $excludedRoutes = [];
 
-    /** @var array<string, Route>  */
-    public array $assertedRoutes = [];
-
     /** @var array<string> */
-    public array $ignoredRoutes = [];
+    protected array $bindings = [];
 
     /** @var array<string>  */
     protected array $defaultIgnoredRoutes = [
         '_ignition',
         '_debugbar',
     ];
+
+    /** @var array<callable> */
+    protected array $customAssertions = [];
 
     public function __construct()
     {
@@ -52,11 +55,23 @@ class RouteTesting
         return $this;
     }
 
+    public function assert(callable $closure): static
+    {
+        $this->customAssertions = array_merge($this->customAssertions, [$closure]);
+
+        return $this;
+    }
+
     public function toReturnSuccessfulResponse(): static
     {
-        $this->assertedRoutes = collect($this->routes)
-            ->reject(fn (Route $route) => $this->shouldIgnoreRoute($route))
+        $this->assertedRoutes = collect($this->routesToAssert())
             ->each(function (Route $route): void {
+                if ($this->customAssertions) {
+                    foreach ($this->customAssertions as $assertion) {
+                        $assertion(test()->get($route->uri()));
+                    }
+                }
+
                 $this->assertOkResponse($route, test()->get($route->uri()));
                 $this->assertOkResponse($route, test()->getJson($route->uri()));
             })->toArray();
@@ -66,6 +81,14 @@ class RouteTesting
         }
 
         return $this;
+    }
+
+    /** @return array<Route> */
+    protected function routesToAssert(): array
+    {
+        return collect($this->routes)
+            ->reject(fn (Route $route) => $this->shouldIgnoreRoute($route))
+            ->toArray();
     }
 
     protected function shouldIgnoreRoute(Route $route): bool
