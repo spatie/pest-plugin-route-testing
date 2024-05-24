@@ -94,6 +94,20 @@ it('can exclude routes based on a wildcard', function () {
         ->toHaveKey('get-endpoint');
 });
 
+it('can exclude routes based on a wildcard 2', function () {
+    Route::get('api/posts', fn () => '');
+    Route::get('api/posts/comments', fn () => '');
+    Route::get('api/comments', fn () => '');
+
+    $class = routeTesting()
+        ->excluding(['api/comments/*'])
+        ->toReturnSuccessfulResponse();
+
+    expect($class->assertedRoutes)
+        ->toHaveCount(1)
+        ->toHaveKey('api/comments');
+});
+
 it('ignores some routes by default', function () {
     Route::get('/_ignition', fn () => '');
     Route::get('/_debugbar', fn () => '');
