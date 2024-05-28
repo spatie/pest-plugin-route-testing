@@ -12,8 +12,6 @@ class RouteTestingServiceProvider extends PackageServiceProvider
     {
         $package
             ->name('route-testing')
-            ->hasCommand(RenderOutputCommand::class)
-        ;
-
+            ->hasCommand(RenderOutputCommand::class);
     }
 }
