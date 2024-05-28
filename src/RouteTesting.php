@@ -88,12 +88,11 @@ class RouteTesting
     protected function isExcluded(string $name): bool
     {
         foreach ($this->excludedRoutes as $excludedRoute) {
-            $pattern = str_replace('\*', '.*', preg_quote($excludedRoute, '/'));
-
-            if (preg_match('/^' . $pattern . '$/', $name)) {
+            if(Str::is($excludedRoute, $name)) {
                 return true;
             }
         }
+
         return false;
     }
 
