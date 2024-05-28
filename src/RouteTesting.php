@@ -88,12 +88,7 @@ class RouteTesting
                 $this->assertOkResponse($route, test()->getJson($route->uri()));
             })->toArray();
 
-        $countAsserted = count($this->assertedRoutes);
-        $countTotal = count($this->assertedRoutes) + count($this->ignoredRoutes);
-
-        if ($countAsserted < $countTotal) {
-            Artisan::call('render', ['asserted' => $countAsserted, 'total' => $countTotal]);
-        }
+        $this->renderOutput();
 
         return $this;
     }
@@ -187,5 +182,15 @@ class RouteTesting
 
         expect($response->getStatusCode())
             ->toBeIn($codes, "Route {$route->uri()} {$route->getActionName()} returned {$response->getStatusCode()}.");
+    }
+
+    protected function renderOutput(): void
+    {
+        $countAsserted = count($this->assertedRoutes);
+        $countTotal = count($this->assertedRoutes) + count($this->ignoredRoutes);
+
+        if ($countAsserted < $countTotal) {
+            Artisan::call('render', ['asserted' => $countAsserted, 'total' => $countTotal]);
+        }
     }
 }

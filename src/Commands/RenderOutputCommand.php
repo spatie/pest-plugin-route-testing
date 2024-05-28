@@ -3,6 +3,7 @@
 namespace Spatie\RouteTesting\Commands;
 
 use Illuminate\Console\Command;
+use function Termwind\{render};
 
 class RenderOutputCommand extends Command
 {
@@ -18,6 +19,9 @@ class RenderOutputCommand extends Command
             throw new \InvalidArgumentException('Asserted argument must be an integer.');
         }
 
-        dump("Tested {$asserted} out of {$total} routes.");
+        $data = "Tested {$asserted} out of {$total} routes.";
+
+        render(
+            sprintf('<div class="px-1 bg-green-300">%s</div>', $data));
     }
 }
