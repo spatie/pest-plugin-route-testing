@@ -22,6 +22,9 @@ class RouteTesting
     protected array $excludedRoutes = [];
 
     /** @var array<string> */
+    protected array $includedRoutes = [];
+
+    /** @var array<string> */
     protected array $bindings = [];
 
     /** @var array<string>  */
@@ -51,6 +54,14 @@ class RouteTesting
     public function excluding(array $routes): static
     {
         $this->excludedRoutes = array_merge($this->excludedRoutes, $routes);
+
+        return $this;
+    }
+
+    /** @param array<string> $routes */
+    public function including(array $routes): static
+    {
+        $this->includedRoutes = array_merge($this->includedRoutes, $routes);
 
         return $this;
     }
@@ -100,6 +111,10 @@ class RouteTesting
             return true;
         }
 
+        if ($this->includedRoutes && ! $this->isIncluded($route->uri())) {
+            return true;
+        }
+
         if ($this->isExcluded($route->uri())) {
             return true;
         }
@@ -115,6 +130,17 @@ class RouteTesting
     {
         foreach ($this->excludedRoutes as $excludedRoute) {
             if(Str::is($excludedRoute, $name)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    protected function isIncluded(string $name): bool
+    {
+        foreach ($this->includedRoutes as $includedRoute) {
+            if(Str::is($includedRoute, $name)) {
                 return true;
             }
         }

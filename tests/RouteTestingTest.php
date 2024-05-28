@@ -138,6 +138,36 @@ it('can exclude routes based on a wildcard 4', function () {
         ->toHaveKey('api/posts');
 });
 
+it('can include routes based on a wildcard', function () {
+    Route::get('api/posts', fn() => '');
+    Route::get('api/posts/comments', fn() => '');
+    Route::get('api/comments', fn() => '');
+
+    $class = routeTesting()
+        ->including(['*posts*'])
+        ->toReturnSuccessfulResponse();
+
+    expect($class->assertedRoutes)
+        ->toHaveCount(2)
+        ->toHaveKey('api/posts')
+        ->toHaveKey('api/posts/comments');
+});
+
+it('can combine included and excluded routes with a wildcard', function () {
+    Route::get('api/posts', fn() => '');
+    Route::get('api/posts/comments', fn() => '');
+    Route::get('api/comments', fn() => '');
+
+    $class = routeTesting()
+        ->including(['*posts*'])
+        ->excluding(['*/comments'])
+        ->toReturnSuccessfulResponse();
+
+    expect($class->assertedRoutes)
+        ->toHaveCount(1)
+        ->toHaveKey('api/posts');
+});
+
 it('ignores some routes by default', function () {
     Route::get('/_ignition', fn() => '');
     Route::get('/_debugbar', fn() => '');
