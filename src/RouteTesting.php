@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route as RouteFacade;
 use Illuminate\Support\Str;
 use Illuminate\Testing\TestResponse;
+use Spatie\RouteTesting\Commands\RenderOutputCommand;
 
 class RouteTesting
 {
@@ -200,7 +201,7 @@ class RouteTesting
         $countAsserted = count($this->assertedRoutes);
         $countTotal = count($this->assertedRoutes) + count($this->ignoredRoutes);
 
-        Artisan::call('render', [
+        Artisan::call(RenderOutputCommand::class, [
             'asserted' => $countAsserted,
             'total' => $countTotal,
             'ignored' => implode(',', $this->ignoredRoutes),
