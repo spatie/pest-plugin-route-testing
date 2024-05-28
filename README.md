@@ -71,6 +71,11 @@ routeTesting()
     ->toReturnSuccessfulResponse();
 ```
 
+This should output somethin like the following:
+
+<img src="https://github.com/spatie/pest-plugin-route-testing/assets/10651054/1773dd2a-2f4f-4cea-a6de-ece5ff3547f9" width="300px" />
+<img src="https://github.com/spatie/pest-plugin-route-testing/assets/10651054/f3ca6b6b-e783-4f54-ab90-b8521598e7d2" width="300px" />
+
 ### Ignoring routes
 
 You can exclude specific routes from being tested using the excluding method.
