@@ -9,6 +9,7 @@ use function Spatie\RouteTesting\routeTesting;
 
 it('can access all GET routes of the API', function () {
     routeTesting()
+        ->debug()
         ->including(['/api/*'])
         ->excluding(['/api/comments/*'])
         ->bind('post', Post::factory()->create())
@@ -54,8 +55,20 @@ it('can access all GET routes as an admin', function () {
     test()->actingAs($admin);
 
     routeTesting()
+        ->debug()
         ->toReturnSuccessfulResponse();
 });
+```
+
+### Debugging
+
+While first using this package, it can be useful to have some additional information.
+For example, how many routes are we actually covering?
+
+```php
+routeTesting()
+    ->debug()
+    ->toReturnSuccessfulResponse();
 ```
 
 ### Ignoring routes

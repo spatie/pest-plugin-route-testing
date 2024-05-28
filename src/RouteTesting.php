@@ -37,6 +37,8 @@ class RouteTesting
     /** @var array<callable> */
     protected array $customAssertions = [];
 
+    protected bool $renderDebugInfo = false;
+
     public function __construct()
     {
         $this->routes = RouteFacade::getRoutes()->getRoutesByMethod()['GET'];
@@ -74,6 +76,13 @@ class RouteTesting
         return $this;
     }
 
+    public function debug(bool $display = true): static
+    {
+        $this->renderDebugInfo = $display;
+
+        return $this;
+    }
+
     public function toReturnSuccessfulResponse(): static
     {
         $this->assertedRoutes = collect($this->routesToAssert())
@@ -88,7 +97,9 @@ class RouteTesting
                 $this->assertOkResponse($route, test()->getJson($route->uri()));
             })->toArray();
 
-        $this->renderOutput();
+        if ($this->renderDebugInfo) {
+            $this->renderOutput();
+        }
 
         return $this;
     }
