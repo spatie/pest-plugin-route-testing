@@ -2,11 +2,16 @@ parameters:
 	ignoreErrors:
 		-
 			message: "#^Call to an undefined method Pest\\\\PendingCalls\\\\TestCall\\|Pest\\\\Support\\\\HigherOrderTapProxy\\:\\:get\\(\\)\\.$#"
-			count: 1
+			count: 2
 			path: src/RouteTesting.php
 
 		-
 			message: "#^Call to an undefined method Pest\\\\PendingCalls\\\\TestCall\\|Pest\\\\Support\\\\HigherOrderTapProxy\\:\\:getJson\\(\\)\\.$#"
+			count: 1
+			path: src/RouteTesting.php
+
+		-
+			message: "#^Method Spatie\\\\RouteTesting\\\\RouteTesting\\:\\:routesToAssert\\(\\) should return array\\<Illuminate\\\\Routing\\\\Route\\> but returns array\\<string, mixed\\>\\.$#"
 			count: 1
 			path: src/RouteTesting.php
 
@@ -16,6 +21,6 @@ parameters:
 			path: src/RouteTesting.php
 
 		-
-			message: "#^Property Spatie\\\\RouteTesting\\\\RouteTesting\\:\\:\\$assertedRoutes \\(array\\<string, Illuminate\\\\Routing\\\\Route\\>\\) does not accept array\\<string, mixed\\>\\.$#"
+			message: "#^Property Spatie\\\\RouteTesting\\\\RouteTesting\\:\\:\\$assertedRoutes \\(array\\<string, Illuminate\\\\Routing\\\\Route\\>\\) does not accept array\\.$#"
 			count: 1
 			path: src/RouteTesting.php

@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Testing\TestResponse;
 use Tests\TestClasses\TestModel;
 use Spatie\RouteTesting\RouteTesting;
 use Tests\TestClasses\TestUser;
@@ -160,4 +161,17 @@ it('can act as a user for authenticated routes', function () {
 
     test()->actingAs(new TestUser());
     routeTesting()->toReturnSuccessfulResponse();
+});
+
+it('can execute a custom assertion', function () {
+    Route::get('/get-endpoint', fn () => response()->json(['message' => 'really-specific'], 201));
+
+    $class = routeTesting()
+        ->assert(function(TestResponse $response) {
+            $response->assertStatus(201);
+        })
+        ->toReturnSuccessfulResponse();
+
+    expect($class->assertedRoutes)
+        ->toHaveCount(1);
 });
