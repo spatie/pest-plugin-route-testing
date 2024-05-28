@@ -3,6 +3,7 @@
 namespace Spatie\RouteTesting;
 
 use Illuminate\Routing\Route;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route as RouteFacade;
 use Illuminate\Support\Str;
 use Illuminate\Testing\TestResponse;
@@ -91,7 +92,7 @@ class RouteTesting
         $countTotal = count($this->assertedRoutes) + count($this->ignoredRoutes);
 
         if ($countAsserted < $countTotal) {
-            dump("Tested {$countAsserted} out of {$countTotal} routes.");
+            Artisan::call('render', ['asserted' => $countAsserted, 'total' => $countTotal]);
         }
 
         return $this;
