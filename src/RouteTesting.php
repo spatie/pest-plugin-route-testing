@@ -3,6 +3,7 @@
 namespace Spatie\RouteTesting;
 
 use Illuminate\Routing\Route;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route as RouteFacade;
 use Illuminate\Support\Str;
 use Illuminate\Testing\TestResponse;
@@ -35,6 +36,8 @@ class RouteTesting
 
     /** @var array<callable> */
     protected array $customAssertions = [];
+
+    protected bool $renderDebugInfo = false;
 
     public function __construct()
     {
@@ -73,6 +76,13 @@ class RouteTesting
         return $this;
     }
 
+    public function debug(bool $display = true): static
+    {
+        $this->renderDebugInfo = $display;
+
+        return $this;
+    }
+
     public function toReturnSuccessfulResponse(): static
     {
         $this->assertedRoutes = collect($this->routesToAssert())
@@ -87,11 +97,8 @@ class RouteTesting
                 $this->assertOkResponse($route, test()->getJson($route->uri()));
             })->toArray();
 
-        $countAsserted = count($this->assertedRoutes);
-        $countTotal = count($this->assertedRoutes) + count($this->ignoredRoutes);
-
-        if ($countAsserted < $countTotal) {
-            dump("Tested {$countAsserted} out of {$countTotal} routes.");
+        if ($this->renderDebugInfo) {
+            $this->renderOutput();
         }
 
         return $this;
@@ -186,5 +193,17 @@ class RouteTesting
 
         expect($response->getStatusCode())
             ->toBeIn($codes, "Route {$route->uri()} {$route->getActionName()} returned {$response->getStatusCode()}.");
+    }
+
+    protected function renderOutput(): void
+    {
+        $countAsserted = count($this->assertedRoutes);
+        $countTotal = count($this->assertedRoutes) + count($this->ignoredRoutes);
+
+        Artisan::call('render', [
+            'asserted' => $countAsserted,
+            'total' => $countTotal,
+            'ignored' => implode(',', $this->ignoredRoutes),
+        ]);
     }
 }
