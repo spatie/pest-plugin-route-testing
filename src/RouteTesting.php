@@ -76,8 +76,11 @@ class RouteTesting
                 $this->assertOkResponse($route, test()->getJson($route->uri()));
             })->toArray();
 
-        if (count($this->ignoredRoutes) > 0) {
-            dump('Ignored routes: ' . count($this->ignoredRoutes));
+        $countAsserted = count($this->assertedRoutes);
+        $countTotal = count($this->assertedRoutes) + count($this->ignoredRoutes);
+
+        if ($countAsserted < $countTotal) {
+            dump("Tested {$countAsserted} out of {$countTotal} routes.");
         }
 
         return $this;
