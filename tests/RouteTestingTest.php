@@ -205,3 +205,18 @@ it('can execute a custom assertion', function () {
     expect($class->assertedRoutes)
         ->toHaveCount(1);
 });
+
+it('can run with debug info when there are unknown bindingd', function () {
+    Route::get('/', fn() => '');
+    Route::get('{post}', fn() => '');
+    Route::get('{comment}', fn() => '');
+
+    routeTesting()
+        ->debug()
+        ->toReturnSuccessfulResponse();
+});
+
+it('can run with Higher Order Testing')
+    ->defer(fn () => Route::get('/get-endpoint', fn() => ''))
+    ->routeTesting()
+    ->toReturnSuccessfulResponse();

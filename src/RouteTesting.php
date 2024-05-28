@@ -201,7 +201,11 @@ class RouteTesting
         $countTotal = count($this->assertedRoutes) + count($this->ignoredRoutes);
 
         if ($countAsserted < $countTotal) {
-            Artisan::call('render', ['asserted' => $countAsserted, 'total' => $countTotal]);
+            Artisan::call('render', [
+                'asserted' => $countAsserted,
+                'total' => $countTotal,
+                'ignored' => implode(',', $this->ignoredRoutes),
+            ]);
         }
     }
 }
