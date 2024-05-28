@@ -15,7 +15,7 @@ class RouteTesting
     public array $assertedRoutes = [];
 
     /** @var array<string> */
-    public array $ignoredRoutes = [];
+    public array $ignoredBindings = [];
 
     /** @var array<string, Route>  */
     protected array $routes = [];
@@ -168,7 +168,7 @@ class RouteTesting
             return false;
         }
 
-        $this->ignoredRoutes = array_merge($this->ignoredRoutes, [$route->uri]);
+        $this->ignoredBindings = array_merge($this->ignoredBindings, [$bindingName]);
 
         return true;
     }
@@ -199,12 +199,12 @@ class RouteTesting
     protected function renderOutput(): void
     {
         $countAsserted = count($this->assertedRoutes);
-        $countTotal = count($this->assertedRoutes) + count($this->ignoredRoutes);
+        $countTotal = count($this->assertedRoutes) + count($this->ignoredBindings);
 
         Artisan::call(RenderOutputCommand::class, [
             'asserted' => $countAsserted,
             'total' => $countTotal,
-            'ignored' => implode(',', $this->ignoredRoutes),
+            'ignored' => implode(',', $this->ignoredBindings),
         ]);
     }
 }

@@ -42,16 +42,16 @@ it('can bind a model to a route', function () {
 });
 
 it('can exclude routes with unknown bindings', function () {
-    Route::get('{user}', fn() => '');
+    Route::get('/api/{user}', fn() => '');
 
     $class = routeTesting()->toReturnSuccessfulResponse();
 
     expect($class->assertedRoutes)
         ->toHaveCount(0);
 
-    expect($class->ignoredRoutes)
+    expect($class->ignoredBindings)
         ->toHaveCount(1)
-        ->toContain('{user}');
+        ->toContain('user');
 });
 
 it('can exclude routes', function () {
@@ -178,7 +178,7 @@ it('ignores some routes by default', function () {
         ->toHaveCount(0);
 
     // We don't want to notify the user about the default ignored routes
-    expect($class->ignoredRoutes)
+    expect($class->ignoredBindings)
         ->toHaveCount(0);
 
 });
