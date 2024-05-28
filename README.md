@@ -40,7 +40,7 @@ composer require spatie/pest-plugin-route-testing
 
 The easiest way to use this package, is to create a `RoutesTest.php` file in your `tests` directory.
 
-This example checks all GET routes (without route model binding) in your application and ensures it returns a 200 HTTP status code or a redirect.
+This example checks all GET routes (without route model binding) in your application and ensures they return a 200 HTTP status code or a redirect.
 
 ```php
 <?php
@@ -62,8 +62,7 @@ it('can access all GET routes as an admin', function () {
 
 ### Debugging
 
-While first using this package, it can be useful to have some additional information.
-For example, how many routes are we actually covering?
+When first using this package, it can be useful to have additional information, such as how many routes are being covered.
 
 ```php
 routeTesting()
@@ -71,14 +70,14 @@ routeTesting()
     ->toReturnSuccessfulResponse();
 ```
 
-This should output somethin like the following:
+This should output something like the following:
 
 <img src="https://github.com/spatie/pest-plugin-route-testing/assets/10651054/1773dd2a-2f4f-4cea-a6de-ece5ff3547f9" width="300px" />
 <img src="https://github.com/spatie/pest-plugin-route-testing/assets/10651054/f3ca6b6b-e783-4f54-ab90-b8521598e7d2" width="300px" />
 
-### Ignoring routes
+### Excluding routes
 
-You can exclude specific routes from being tested using the excluding method.
+Exclude specific routes from being tested using the excluding method.
 
 ```php
 routeTesting()
@@ -86,7 +85,7 @@ routeTesting()
     ->toReturnSuccessfulResponse();
 ```
 
-You can use a wildcard for ignoring routes
+You can also use wildcards to ignore routes:
 
 ```php
 routeTesting()
@@ -94,7 +93,7 @@ routeTesting()
     ->toReturnSuccessfulResponse();
 ```
 
-By default, the package ignores certain routes such as _ignition and _debugbar.
+By default, the package ignores certain routes such as `_ignition` and `_debugbar`.
 
 ### Including routes
 
@@ -106,17 +105,17 @@ routeTesting()
     ->toReturnSuccessfulResponse();
 ```
 
-You can use a wildcard too
+You can also use wildcards to inclue routes:
 
 ```php
 routeTesting()
-    ->excluding(['api/*'])
+    ->including(['api/*'])
     ->toReturnSuccessfulResponse();
 ```
 
 ### Combining excludes and includes
 
-In this example, routes like `api/posts/{post}` are excluded, except for `api/posts/{post}/comments`
+In this example, routes like `api/posts/{post}` are excluded, except for `api/posts/{post}/comments`:
 
 ```php
 routeTesting()
@@ -129,21 +128,19 @@ You can also use a wildcard for both.
 
 ### Route model binding
 
-If your routes include model bindings, you can mock these using the `bind` method:
+Mock route model bindings using the `bind` method:
 
 ```php
-$user = User::factory()->create();
-
 routeTesting()
-    ->bind('user', $user)
+    ->bind('user', User::factory()->create())
     ->toReturnSuccessfulResponse();
 ```
 
-By default, we will ignore all route with unknown bindings.
+By default, routes with unknown bindings are ignored. The `debug` option can be handy for this!
 
 ### Custom assertions
 
-You can add custom assertions for specific routes using the assert method:
+Add custom assertions for specific routes using the `assert` method:
 
 ```php
 use Illuminate\Testing\TestResponse;
@@ -155,10 +152,6 @@ routeTesting()
     })
     ->toReturnSuccessfulResponse();
 ```
-
-## Documentation
-
-All documentation is available [on our documentation site](https://spatie.be/docs/pest-plugin-route-testing).
 
 ## Testing
 
