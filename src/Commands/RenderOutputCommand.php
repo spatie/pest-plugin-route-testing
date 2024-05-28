@@ -34,7 +34,8 @@ class RenderOutputCommand extends Command
             throw new \InvalidArgumentException('Asserted argument must be a string.');
         }
 
-        render(sprintf('<div class="px-1 bg-yellow-300">Ignored bindings: %s</div>', $ignored));
-
+        if ($ignored !== '') {
+            render(sprintf('<div class="px-1 bg-yellow-300">Ignored bindings: %s</div>', $ignored));
+        }
     }
 }
