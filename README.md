@@ -1,19 +1,22 @@
 # Make sure all routes in your Laravel app are ok
 
-This package provides a simple way to test your application's routes with PestPHP.
+This package provides a simple API to test your application's routes with PestPHP.
 
 Here's a quick example:
 
 ```php
 use function Spatie\RouteTesting\routeTesting;
 
-routeTesting()
-    ->excluding(['/api/comments/*'])
-    ->bind('post', Post::factory()->create())
-    ->assert(function(Response $response) {
-        $response->assertStatus(201);
-    })
-    ->toReturnSuccesfullResponse();
+it('can access all GET routes of the API', function () {
+    routeTesting()
+        ->including(['/api/*'])
+        ->excluding(['/api/comments/*'])
+        ->bind('post', Post::factory()->create())
+        ->assert(function(Response $response) {
+            // perform custom assertions
+        })
+        ->toReturnSuccesfullResponse();
+});
 ```
 
 ## Support us
@@ -34,14 +37,106 @@ composer require spatie/pest-plugin-route-testing
 
 ## Usage
 
+The easiest way to use this package, is to create a `RoutesTest.php` file in your `tests` directory.
 
-But you also use a wildcard for ignoring routes
+This example checks all GET routes (without route model binding) in your application and ensures it returns a 200 HTTP status code or a redirect.
 
 ```php
-routeTesting()->excluding(['/api/comments/*'])
+<?php
+
+namespace Tests;
+
+use function Spatie\RouteTesting\routeTesting;
+
+it('can access all GET routes as an admin', function () {
+    $user = User::factory()->create(['role' => 'admin']);
+    
+    test()->actingAs($admin);
+
+    routeTesting()
+        ->toReturnSuccessfulResponse();
+});
 ```
 
+### Ignoring routes
 
+You can exclude specific routes from being tested using the excluding method.
+
+```php
+routeTesting()
+    ->excluding(['api/comments', 'api/posts'])
+    ->toReturnSuccessfulResponse();
+```
+
+You can use a wildcard for ignoring routes
+
+```php
+routeTesting()
+    ->excluding(['api/comments/*'])
+    ->toReturnSuccessfulResponse();
+```
+
+By default, the package ignores certain routes such as _ignition and _debugbar.
+
+### Including routes
+
+You can only run for specific routes by using the `including` method:
+
+```php
+routeTesting()
+    ->including(['api/comments', 'api/posts'])
+    ->toReturnSuccessfulResponse();
+```
+
+You can use a wildcard too
+
+```php
+routeTesting()
+    ->excluding(['api/*'])
+    ->toReturnSuccessfulResponse();
+```
+
+### Combining excludes and includes
+
+In this example, routes like `api/posts/{post}` are excluded, except for `api/posts/{post}/comments`
+
+```php
+routeTesting()
+    ->excluding(['api/posts/*'])
+    ->including(['api/posts/{post}/comments'])
+    ->toReturnSuccessfulResponse();
+```
+
+You can also use a wildcard for both.
+
+### Route model binding
+
+If your routes include model bindings, you can mock these using the `bind` method:
+
+```php
+$user = User::factory()->create();
+
+routeTesting()
+    ->bind('user', $user)
+    ->toReturnSuccessfulResponse();
+```
+
+By default, we will ignore all route with unknown bindings.
+
+### Custom assertions
+
+You can add custom assertions for specific routes using the assert method:
+
+```php
+use Illuminate\Testing\TestResponse;
+
+routeTesting()
+    ->including('api/*')
+    ->assert(function (TestResponse $response) {
+        $response->assertStatus(201);
+    })
+    ->toReturnSuccessfulResponse();
+```
 
 ## Documentation
 
