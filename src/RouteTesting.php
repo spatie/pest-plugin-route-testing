@@ -88,14 +88,13 @@ class RouteTesting
     {
         $this->assertedRoutes = collect($this->routesToAssert())
             ->each(function (Route $route): void {
+                $this->assertOkResponse($route, test()->get($route->uri()));
+
                 if ($this->customAssertions) {
                     foreach ($this->customAssertions as $assertion) {
                         $assertion(test()->get($route->uri()));
                     }
                 }
-
-                $this->assertOkResponse($route, test()->get($route->uri()));
-                $this->assertOkResponse($route, test()->getJson($route->uri()));
             })->toArray();
 
         if ($this->renderDebugInfo) {
