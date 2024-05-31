@@ -3,11 +3,12 @@
 namespace Spatie\RouteTesting\Commands;
 
 use Illuminate\Console\Command;
+
 use function Termwind\{render};
 
 class RenderOutputCommand extends Command
 {
-    /** @var string $signature */
+    /** @var string */
     protected $signature = 'render {asserted} {total} {ignored}';
 
     public function handle(): void

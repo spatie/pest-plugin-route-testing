@@ -11,13 +11,13 @@ use Spatie\RouteTesting\Commands\RenderOutputCommand;
 
 class RouteTesting
 {
-    /** @var array<string, Route>  */
+    /** @var array<string, Route> */
     public array $assertedRoutes = [];
 
     /** @var array<string> */
     public array $ignoredBindings = [];
 
-    /** @var array<string, Route>  */
+    /** @var array<string, Route> */
     protected array $routes = [];
 
     /** @var array<string> */
@@ -29,7 +29,7 @@ class RouteTesting
     /** @var array<string> */
     protected array $bindings = [];
 
-    /** @var array<string>  */
+    /** @var array<string> */
     protected array $defaultIgnoredRoutes = [
         '_ignition',
         '_debugbar',
@@ -108,7 +108,7 @@ class RouteTesting
     protected function routesToAssert(): array
     {
         return collect($this->routes)
-            ->reject(fn (Route $route) => $this->shouldIgnoreRoute($route))
+            ->reject(fn (Route $route): bool => $this->shouldIgnoreRoute($route))
             ->toArray();
     }
 
@@ -136,7 +136,7 @@ class RouteTesting
     protected function isExcluded(string $name): bool
     {
         foreach ($this->excludedRoutes as $excludedRoute) {
-            if(Str::is($excludedRoute, $name)) {
+            if (Str::is($excludedRoute, $name)) {
                 return true;
             }
         }
@@ -147,7 +147,7 @@ class RouteTesting
     protected function isIncluded(string $name): bool
     {
         foreach ($this->includedRoutes as $includedRoute) {
-            if(Str::is($includedRoute, $name)) {
+            if (Str::is($includedRoute, $name)) {
                 return true;
             }
         }

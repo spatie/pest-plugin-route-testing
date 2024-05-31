@@ -2,14 +2,15 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Testing\TestResponse;
-use Tests\TestClasses\TestModel;
 use Spatie\RouteTesting\RouteTesting;
+use Tests\TestClasses\TestModel;
 use Tests\TestClasses\TestUser;
+
 use function Spatie\RouteTesting\routeTesting;
 
 it('only checks for GET endpoints', function () {
-    Route::get('/get-endpoint', fn() => '');
-    Route::post('/post-endpoint', fn() => '');
+    Route::get('/get-endpoint', fn () => '');
+    Route::post('/post-endpoint', fn () => '');
 
     $class = routeTesting()->toReturnSuccessfulResponse();
 
@@ -22,7 +23,7 @@ it('only checks for GET endpoints', function () {
 });
 
 it('can bind a model to a route', function () {
-    Route::get('{user}', fn() => '');
+    Route::get('{user}', fn () => '');
 
     $model = new TestModel();
 
@@ -42,7 +43,7 @@ it('can bind a model to a route', function () {
 });
 
 it('can exclude routes with unknown bindings', function () {
-    Route::get('/api/{user}', fn() => '');
+    Route::get('/api/{user}', fn () => '');
 
     $class = routeTesting()->toReturnSuccessfulResponse();
 
@@ -55,8 +56,8 @@ it('can exclude routes with unknown bindings', function () {
 });
 
 it('can exclude routes', function () {
-    Route::get('/get-endpoint', fn() => '');
-    Route::get('/excluded-endpoint', fn() => '');
+    Route::get('/get-endpoint', fn () => '');
+    Route::get('/excluded-endpoint', fn () => '');
 
     $class = routeTesting()
         ->excluding(['excluded-endpoint'])
@@ -68,9 +69,9 @@ it('can exclude routes', function () {
 });
 
 it('can exclude multiple routes', function () {
-    Route::get('/get-endpoint', fn() => '');
-    Route::get('/excluded-endpoint', fn() => '');
-    Route::get('/2-excluded-endpoint', fn() => '');
+    Route::get('/get-endpoint', fn () => '');
+    Route::get('/excluded-endpoint', fn () => '');
+    Route::get('/2-excluded-endpoint', fn () => '');
 
     $class = routeTesting()
         ->excluding(['excluded-endpoint', '2-excluded-endpoint'])
@@ -82,9 +83,9 @@ it('can exclude multiple routes', function () {
 });
 
 it('can exclude routes based on a wildcard', function () {
-    Route::get('/get-endpoint', fn() => '');
-    Route::get('/excluded-endpoint', fn() => '');
-    Route::get('/excluded-endpoint-2', fn() => '');
+    Route::get('/get-endpoint', fn () => '');
+    Route::get('/excluded-endpoint', fn () => '');
+    Route::get('/excluded-endpoint-2', fn () => '');
 
     $class = routeTesting()
         ->excluding(['excluded-*'])
@@ -96,9 +97,9 @@ it('can exclude routes based on a wildcard', function () {
 });
 
 it('can exclude routes based on a wildcard 2', function () {
-    Route::get('api/posts', fn() => '');
-    Route::get('api/posts/comments', fn() => '');
-    Route::get('api/comments', fn() => '');
+    Route::get('api/posts', fn () => '');
+    Route::get('api/posts/comments', fn () => '');
+    Route::get('api/comments', fn () => '');
 
     $class = routeTesting()
         ->excluding(['api/posts*'])
@@ -110,9 +111,9 @@ it('can exclude routes based on a wildcard 2', function () {
 });
 
 it('can exclude routes based on a wildcard 3', function () {
-    Route::get('api/posts', fn() => '');
-    Route::get('api/posts/comments', fn() => '');
-    Route::get('api/comments', fn() => '');
+    Route::get('api/posts', fn () => '');
+    Route::get('api/posts/comments', fn () => '');
+    Route::get('api/comments', fn () => '');
 
     $class = routeTesting()
         ->excluding(['api/*/comments'])
@@ -125,9 +126,9 @@ it('can exclude routes based on a wildcard 3', function () {
 });
 
 it('can exclude routes based on a wildcard 4', function () {
-    Route::get('api/posts', fn() => '');
-    Route::get('api/posts/comments', fn() => '');
-    Route::get('api/comments', fn() => '');
+    Route::get('api/posts', fn () => '');
+    Route::get('api/posts/comments', fn () => '');
+    Route::get('api/comments', fn () => '');
 
     $class = routeTesting()
         ->excluding(['*/comments'])
@@ -139,9 +140,9 @@ it('can exclude routes based on a wildcard 4', function () {
 });
 
 it('can include routes based on a wildcard', function () {
-    Route::get('api/posts', fn() => '');
-    Route::get('api/posts/comments', fn() => '');
-    Route::get('api/comments', fn() => '');
+    Route::get('api/posts', fn () => '');
+    Route::get('api/posts/comments', fn () => '');
+    Route::get('api/comments', fn () => '');
 
     $class = routeTesting()
         ->including(['*posts*'])
@@ -154,9 +155,9 @@ it('can include routes based on a wildcard', function () {
 });
 
 it('can combine included and excluded routes with a wildcard', function () {
-    Route::get('api/posts', fn() => '');
-    Route::get('api/posts/comments', fn() => '');
-    Route::get('api/comments', fn() => '');
+    Route::get('api/posts', fn () => '');
+    Route::get('api/posts/comments', fn () => '');
+    Route::get('api/comments', fn () => '');
 
     $class = routeTesting()
         ->including(['*posts*'])
@@ -169,8 +170,8 @@ it('can combine included and excluded routes with a wildcard', function () {
 });
 
 it('ignores some routes by default', function () {
-    Route::get('/_ignition', fn() => '');
-    Route::get('/_debugbar', fn() => '');
+    Route::get('/_ignition', fn () => '');
+    Route::get('/_debugbar', fn () => '');
 
     $class = routeTesting()->toReturnSuccessfulResponse();
 
@@ -184,9 +185,9 @@ it('ignores some routes by default', function () {
 });
 
 it('can act as a user for authenticated routes', function () {
-    Route::middleware('auth')->get('/authenticated-endpoint', fn() => '');
+    Route::middleware('auth')->get('/authenticated-endpoint', fn () => '');
 
-    expect(fn() => routeTesting()->toReturnSuccessfulResponse())
+    expect(fn () => routeTesting()->toReturnSuccessfulResponse())
         ->toThrow(\Illuminate\Http\Exceptions\HttpResponseException::class);
 
     test()->actingAs(new TestUser());
@@ -197,7 +198,7 @@ it('can execute a custom assertion', function () {
     Route::get('/get-endpoint', fn () => response()->json(['message' => 'really-specific'], 201));
 
     $class = routeTesting()
-        ->assert(function(TestResponse $response) {
+        ->assert(function (TestResponse $response) {
             $response->assertStatus(201);
         })
         ->toReturnSuccessfulResponse();
@@ -207,9 +208,9 @@ it('can execute a custom assertion', function () {
 });
 
 it('can run with debug info when there are unknown bindingd', function () {
-    Route::get('/', fn() => '');
-    Route::get('{post}', fn() => '');
-    Route::get('{comment}', fn() => '');
+    Route::get('/', fn () => '');
+    Route::get('{post}', fn () => '');
+    Route::get('{comment}', fn () => '');
 
     routeTesting()
         ->debug()
@@ -217,6 +218,6 @@ it('can run with debug info when there are unknown bindingd', function () {
 });
 
 it('can run with Higher Order Testing')
-    ->defer(fn () => Route::get('/get-endpoint', fn() => ''))
+    ->defer(fn () => Route::get('/get-endpoint', fn () => ''))
     ->routeTesting()
     ->toReturnSuccessfulResponse();
