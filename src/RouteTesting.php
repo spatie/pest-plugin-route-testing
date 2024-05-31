@@ -33,6 +33,9 @@ class RouteTesting
     protected array $defaultIgnoredRoutes = [
         '_ignition',
         '_debugbar',
+        'horizon*',
+        'pulse*',
+        'sanctum*',
     ];
 
     /** @var array<callable> */
@@ -114,7 +117,7 @@ class RouteTesting
 
     protected function shouldIgnoreRoute(Route $route): bool
     {
-        if (Str::startsWith($route->uri(), $this->defaultIgnoredRoutes)) {
+        if ($this->isIgnored($route->uri())) {
             return true;
         }
 
@@ -148,6 +151,17 @@ class RouteTesting
     {
         foreach ($this->includedRoutes as $includedRoute) {
             if (Str::is($includedRoute, $name)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    protected function isIgnored(string $name): bool
+    {
+        foreach ($this->defaultIgnoredRoutes as $ignoredRoute) {
+            if (Str::is($ignoredRoute, $name)) {
                 return true;
             }
         }

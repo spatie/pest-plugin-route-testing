@@ -181,7 +181,20 @@ it('ignores some routes by default', function () {
     // We don't want to notify the user about the default ignored routes
     expect($class->ignoredBindings)
         ->toHaveCount(0);
+});
 
+it('ignores some routes by default with a wildcard', function () {
+    Route::get('/horizon/id', fn () => '');
+    Route::get('/horizons', fn () => '');
+
+    $class = routeTesting()->toReturnSuccessfulResponse();
+
+    expect($class->assertedRoutes)
+        ->toHaveCount(0);
+
+    // We don't want to notify the user about the default ignored routes
+    expect($class->ignoredBindings)
+        ->toHaveCount(0);
 });
 
 it('can act as a user for authenticated routes', function () {
