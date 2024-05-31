@@ -16,7 +16,7 @@ it('can access all GET routes of the API', function () {
         ->assert(function(Response $response) {
             // perform custom assertions
         })
-        ->toReturnSuccesfullResponse();
+        ->toReturnSuccessfulResponse();
 });
 ```
 
