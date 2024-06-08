@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route as RouteFacade;
 use Illuminate\Support\Str;
 use Illuminate\Testing\TestResponse;
+use Pest\PendingCalls\TestCall;
 use Spatie\RouteTesting\Commands\RenderOutputCommand;
 
 class RouteTesting
