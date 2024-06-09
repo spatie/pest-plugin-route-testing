@@ -6,10 +6,8 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Traits\ForwardsCalls;
 use Illuminate\Testing\TestResponse;
 use Pest\PendingCalls\TestCall;
-use Pest\Support\Backtrace;
-use Pest\TestSuite;
 
-/** @mixin TestCall */
+/** @mixin TestCall|TestResponse */
 class RouteTestingTestCall
 {
     use ForwardsCalls;
@@ -18,13 +16,9 @@ class RouteTestingTestCall
 
     protected RouteResolver $routeResolver;
 
-    protected RouteTester $routeTester;
-
-    public function __construct(TestCall $testCall, RouteTester $routeTester)
+    public function __construct(TestCall $testCall)
     {
         $this->testCall = $testCall;
-
-        $this->routeTester = $routeTester;
 
         $this->routeResolver = new RouteResolver();
 
@@ -47,13 +41,6 @@ class RouteTestingTestCall
         $this->routeResolver->exceptPaths(Arr::wrap($path));
 
         $this->with($this->routeResolver->getFilteredRouteList());
-
-        return $this;
-    }
-
-    public function assertStatus(int $status): self
-    {
-        $this->routeTester->assert($status);
 
         return $this;
     }

@@ -14,14 +14,11 @@ use PHPUnit\Util\Test;
 Plugin::uses(RouteTestable::class);
 
 if (! function_exists('routeTesting')) {
-    function routeTesting(string $description): RouteTestingTestCall
+    function routeTesting(string $description)
     {
-        $routeTester = new RouteTester();
+        $test = test($description)
+            ->expect(fn (string $method, string $uri) => $this->{$method}($uri));
 
-        $test = test($description, function(string $method, string $uri) use ($routeTester) {
-            $routeTester->test($this, $method, $uri);
-        });
-
-        return new RouteTestingTestCall($test, $routeTester);
+        return new RouteTestingTestCall($test);
     }
 }
