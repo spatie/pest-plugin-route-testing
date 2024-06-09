@@ -16,6 +16,7 @@ Plugin::uses(RouteTestable::class);
 if (! function_exists('routeTesting')) {
     function routeTesting(string $description)
     {
+        // For some reason, the test expectation must be here.
         $test = test($description)
             ->expect(fn (string $method, string $uri) => $this->{$method}($uri));
 
