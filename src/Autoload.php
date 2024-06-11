@@ -9,10 +9,8 @@ use Pest\Plugin;
 Plugin::uses(RouteTestable::class);
 
 if (! function_exists('routeTesting')) {
-    function routeTesting(): RouteTesting
+    function routeTesting(string $description)
     {
-        //test()->withExceptionHandling();
-
-        return test()->routeTesting(...func_get_args()); // @phpstan-ignore-line
+        return new RouteTestingTestCall(test($description));
     }
 }

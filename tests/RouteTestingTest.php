@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Testing\TestResponse;
-use Spatie\RouteTesting\RouteTesting;
+use Spatie\RouteTesting\RouteTestingOld;
 use Tests\TestClasses\TestModel;
 use Tests\TestClasses\TestUser;
 
@@ -14,7 +14,7 @@ it('only checks for GET endpoints', function () {
 
     $class = routeTesting()->toReturnSuccessfulResponse();
 
-    expect($class)->toBeInstanceOf(RouteTesting::class);
+    expect($class)->toBeInstanceOf(RouteTestingOld::class);
 
     expect($class->assertedRoutes)
         ->toHaveCount(1)
@@ -31,7 +31,7 @@ it('can bind a model to a route', function () {
         ->bind('user', $model)
         ->toReturnSuccessfulResponse();
 
-    expect($class)->toBeInstanceOf(RouteTesting::class);
+    expect($class)->toBeInstanceOf(RouteTestingOld::class);
 
     expect($class->assertedRoutes)
         ->toHaveCount(1);
