@@ -5,12 +5,12 @@ namespace Spatie\RouteTesting;
 use Closure;
 use Illuminate\Routing\Exceptions\UrlGenerationException;
 use Illuminate\Routing\Route;
+use Illuminate\Support\Facades\Route as RouteFacade;
 use Illuminate\Testing\TestResponse;
 use Pest\PendingCalls\BeforeEachCall;
 use Pest\PendingCalls\TestCall;
 use Pest\Support\Backtrace;
 use Pest\TestSuite;
-use Illuminate\Support\Facades\Route as RouteFacade;
 
 class RouteTest
 {
@@ -19,7 +19,7 @@ class RouteTest
         new BeforeEachCall(
             TestSuite::getInstance(),
             Backtrace::testFile(),
-            fn() => $this->parameters[$binding] = $closure()
+            fn () => $this->parameters[$binding] = $closure()
         );
     }
 
@@ -31,7 +31,7 @@ class RouteTest
                 /** @var Route $route */
                 $route = collect(RouteFacade::getRoutes()
                     ->getRoutesByMethod()[$method])
-                    ->first(fn(Route $route) => $route->uri === $uri);
+                    ->first(fn (Route $route) => $route->uri === $uri);
 
                 if ($route === null) {
                     $this->markTestIncomplete("Route not found: {$method} {$uri}");
@@ -43,7 +43,7 @@ class RouteTest
                     $this->markTestSkipped("Missing parameters for route: {$method} {$uri}");
                 }
             })
-        ->expect(fn(string $method, string $uri) => $this->{$method}($this->url));
+            ->expect(fn (string $method, string $uri) => $this->{$method}($this->url));
 
         foreach ($assertions as [$method, $parameters]) {
             $testResponse->{$method}(...$parameters);

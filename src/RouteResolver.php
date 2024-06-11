@@ -31,10 +31,10 @@ class RouteResolver
         $routes = json_decode($process->getOutput(), true);
 
         return collect($routes)->flatMap(
-            fn($route) => Str::of($route['method'])
-            ->explode('|')
-            ->intersect($this->methods)
-            ->map(fn($method) => ['method' => $method, 'uri' => $route['uri']])
+            fn ($route) => Str::of($route['method'])
+                ->explode('|')
+                ->intersect($this->methods)
+                ->map(fn ($method) => ['method' => $method, 'uri' => $route['uri']])
         );
     }
 
@@ -57,14 +57,14 @@ class RouteResolver
         return $this->fullRouteList
             ->filter(function ($route) {
                 if ($this->paths) {
-                    return collect($this->paths)->contains(fn($path) => Str::is($path, $route['uri']));
+                    return collect($this->paths)->contains(fn ($path) => Str::is($path, $route['uri']));
                 }
 
                 return true;
             })
             ->filter(function ($route) {
                 if ($this->exceptPaths) {
-                    return ! collect($this->exceptPaths)->contains(fn($path) => Str::is($path, $route['uri']));
+                    return ! collect($this->exceptPaths)->contains(fn ($path) => Str::is($path, $route['uri']));
                 }
 
                 return true;

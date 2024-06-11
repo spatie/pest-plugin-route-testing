@@ -8,7 +8,7 @@ use Pest\Plugin;
 
 Plugin::uses(RouteTestable::class);
 
-if (!function_exists('routeTesting')) {
+if (! function_exists('routeTesting')) {
     function routeTesting(string $description)
     {
         return new RouteTestingTestCall(test($description));

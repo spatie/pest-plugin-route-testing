@@ -2,17 +2,11 @@
 
 namespace Spatie\RouteTesting;
 
-use App\Domain\Project\Models\Project;
 use Closure;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Traits\ForwardsCalls;
 use Illuminate\Testing\TestResponse;
-use Pest\PendingCalls\BeforeEachCall;
 use Pest\PendingCalls\TestCall;
-use Pest\Support\Backtrace;
-use Pest\Support\Reflection;
-use Pest\TestSuite;
 
 /** @mixin TestResponse|TestCall */
 class RouteTestingTestCall
@@ -62,7 +56,7 @@ class RouteTestingTestCall
     }
 
     /**
-     * @param string[]|array $path
+     * @param  string[]|array  $path
      * @return $this
      */
     public function exclude(string|array $path): self
@@ -75,7 +69,7 @@ class RouteTestingTestCall
     }
 
     /**
-     * @param array|string[] $path
+     * @param  array|string[]  $path
      * @return $this
      */
     public function include(array|string $path): self
