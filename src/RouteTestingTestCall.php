@@ -2,12 +2,19 @@
 
 namespace Spatie\RouteTesting;
 
+use App\Domain\Project\Models\Project;
+use Closure;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Traits\ForwardsCalls;
 use Illuminate\Testing\TestResponse;
+use Pest\PendingCalls\BeforeEachCall;
 use Pest\PendingCalls\TestCall;
+use Pest\Support\Backtrace;
+use Pest\Support\Reflection;
+use Pest\TestSuite;
 
-/** @mixin TestCall|TestResponse */
+/** @mixin TestResponse|TestCall */
 class RouteTestingTestCall
 {
     use ForwardsCalls;
@@ -15,6 +22,9 @@ class RouteTestingTestCall
     protected TestCall $testCall;
 
     protected RouteResolver $routeResolver;
+
+    /** @var array<array{0: string, 1: string}> */
+    protected array $assertions = [];
 
     public function __construct(TestCall $testCall)
     {
@@ -28,6 +38,25 @@ class RouteTestingTestCall
     protected function with(array $routes): self
     {
         $this->testCall->testCaseMethod->datasets = [$routes];
+
+        return $this;
+    }
+
+    public function setUp(Closure $closure): static
+    {
+        $this->testCall->defer($closure);
+
+        return $this;
+    }
+
+    /**
+     * There is some weird Pest magic going on here... We can't create closures in this class.
+     * Instead, just pass the arguments to a different class where we can create closures.
+     * It's 3 AM and this took me like 3 days to figure out and I just want to sleep.
+     */
+    public function bind(string $binding, Closure $closure): self
+    {
+        RouteTest::bind($binding, $closure);
 
         return $this;
     }
@@ -58,8 +87,24 @@ class RouteTestingTestCall
         return $this;
     }
 
-    public function __call($method, $parameters)
+    public function __call($method, $parameters): self
     {
-        return $this->forwardDecoratedCallTo($this->testCall, $method, $parameters);
+        // Assertions cannot be chained on the test call yet until the user is done adding bindings and other Pest test methods.
+        // We'll capture assertions and apply them to the TestResponse later (in the __destruct method).
+        if (in_array($method, get_class_methods(TestResponse::class))) {
+            $this->assertions[] = [$method, $parameters];
+
+            return $this;
+        }
+
+        // Make sure Pest's methods (skip, group, etc...) are still callable.
+        $this->forwardCallTo($this->testCall, $method, $parameters);
+
+        return $this;
+    }
+
+    public function __destruct()
+    {
+        RouteTest::test($this->testCall, $this->assertions);
     }
 }
