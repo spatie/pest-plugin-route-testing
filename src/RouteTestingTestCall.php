@@ -31,6 +31,14 @@ class RouteTestingTestCall
         $this->routeResolver = new RouteResolver();
 
         $this->with($this->routeResolver->getFilteredRouteList());
+
+        $this->exclude([
+            '_ignition',
+            '_debugbar',
+            'horizon*',
+            'pulse*',
+            'sanctum*',
+        ]);
     }
 
     protected function with(array $routes): self
