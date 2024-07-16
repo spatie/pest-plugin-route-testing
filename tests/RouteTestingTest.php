@@ -8,8 +8,8 @@ use Tests\TestClasses\TestUser;
 
 use function Spatie\RouteTesting\routeTesting;
 
-beforeEach(function() {
-   $this->markTestSkipped();
+beforeEach(function () {
+    $this->markTestSkipped();
 });
 
 it('only checks for GET endpoints', function () {
