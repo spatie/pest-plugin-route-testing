@@ -3,7 +3,6 @@
 namespace Spatie\RouteTesting;
 
 use Closure;
-use Illuminate\Routing\Route;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Traits\ForwardsCalls;
 use Illuminate\Testing\TestResponse;
