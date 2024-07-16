@@ -38,7 +38,7 @@ class RouteTest
                 }
 
                 try {
-                    $this->url = url()->toRoute($route, $this->parameters, false);
+                    $this->url = url()->toRoute($route, $this->parameters ?? null, false);
                 } catch (UrlGenerationException) {
                     $this->markTestSkipped("Missing parameters for route: {$method} {$uri}");
                 }

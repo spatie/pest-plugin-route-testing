@@ -3,6 +3,7 @@
 namespace Spatie\RouteTesting;
 
 use Closure;
+use Illuminate\Routing\Route;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Traits\ForwardsCalls;
 use Illuminate\Testing\TestResponse;
@@ -16,6 +17,9 @@ class RouteTestingTestCall
     protected TestCall $testCall;
 
     protected RouteResolver $routeResolver;
+
+    /** @var array<int, string> */
+    protected array $bindingNames = [];
 
     /** @var array<array{0: string, 1: string}> */
     protected array $assertions = [];
@@ -51,6 +55,10 @@ class RouteTestingTestCall
     public function bind(string $binding, Closure $closure): self
     {
         RouteTest::bind($binding, $closure);
+
+        $this->bindingNames = array_merge($this->bindingNames, [$binding]);
+
+        $this->with($this->routeResolver->getFilteredRouteList());
 
         return $this;
     }
