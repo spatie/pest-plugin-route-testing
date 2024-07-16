@@ -32,7 +32,7 @@ class RouteTestingOld
     /** @var array<string> */
     protected array $defaultIgnoredRoutes = [
         '_ignition',
-        '_debugbar',
+        '_debugbar*',
         'horizon*',
         'pulse*',
         'sanctum*',

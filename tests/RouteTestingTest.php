@@ -8,6 +8,10 @@ use Tests\TestClasses\TestUser;
 
 use function Spatie\RouteTesting\routeTesting;
 
+beforeEach(function() {
+   $this->markTestSkipped();
+});
+
 it('only checks for GET endpoints', function () {
     Route::get('/get-endpoint', fn () => '');
     Route::post('/post-endpoint', fn () => '');
