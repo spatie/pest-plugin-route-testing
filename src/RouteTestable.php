@@ -9,8 +9,10 @@ namespace Spatie\RouteTesting;
  */
 trait RouteTestable
 {
-    public function routeTesting(): RouteTesting
+    public function bind(string $binding, mixed $value): self
     {
-        return new RouteTesting();
+        $this->parameters[$binding] = $value;
+
+        return $this;
     }
 }

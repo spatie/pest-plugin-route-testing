@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 use Illuminate\Testing\TestResponse;
 use Spatie\RouteTesting\Commands\RenderOutputCommand;
 
-class RouteTesting
+class RouteTestingOld
 {
     /** @var array<string, Route> */
     public array $assertedRoutes = [];
