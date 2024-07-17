@@ -93,7 +93,7 @@ class RouteResolver
                       if (count($uriBindings) === 0) {
                           return true;
                       }
-                      dump($uriBindings,  $this->bindingNames);
+
                       return count(array_diff($uriBindings, $this->bindingNames)) === 0;
                   });
             })
