@@ -89,11 +89,34 @@ Instead of `assertSuccessful()` you can use any assertion that is available in L
 
 ### Binding route model bindings
 
-// Coming soon
+If you there are routes that have route model bindings, the package will skip the test for those routes. Let's assume you have a route defined as  `user/{user}`. Here's what the output looks like when you run the test.
 
-### Ignoring routes with missing route model bindings
+// INSERT IMAGE
 
-// Coming soon
+If you want to test a route with a route model binding, you can provide the model using the `bind` method.
+
+```php
+use function Spatie\RouteTesting\routeTesting;
+use App\Models\User;
+
+routeTesting('all blog routes')
+    ->bind('user', User::factory()->create())
+    ->assertSuccessful();
+```
+
+When you run the test now, the package will use the provided model to test the route.
+
+// INSERT IMAGE
+
+If you don't want to display tests that are skipped because of a missing model binding, you can call `ignoreRoutesWithMissingBindings()`.
+
+```php
+use function Spatie\RouteTesting\routeTesting;
+
+routeTesting('all blog routes')
+    ->ignoreRoutesWithMissingBindings()
+    ->assertSuccessful();
+```
 
 ## Testing
 
