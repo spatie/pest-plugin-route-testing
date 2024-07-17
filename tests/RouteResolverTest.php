@@ -21,7 +21,7 @@ it('can get a routes', function () {
     ]);
 });
 
-it('can can only get specific paths', function() {
+it('can can only get specific paths', function () {
     setUpRoutes([
         'one',
         'one-another',
@@ -39,7 +39,7 @@ it('can can only get specific paths', function() {
     ]);
 });
 
-it('can use a wildcard to get specific paths', function() {
+it('can use a wildcard to get specific paths', function () {
     setUpRoutes([
         'one',
         'one-another',
@@ -56,7 +56,7 @@ it('can use a wildcard to get specific paths', function() {
     ]);
 });
 
-it('can exclude paths', function() {
+it('can exclude paths', function () {
     setUpRoutes([
         'one',
         'two',
@@ -73,7 +73,7 @@ it('can exclude paths', function() {
     ]);
 });
 
-it('can exclude paths using a wildcard', function() {
+it('can exclude paths using a wildcard', function () {
     setUpRoutes([
         'one',
         'one-another',
@@ -91,7 +91,7 @@ it('can exclude paths using a wildcard', function() {
     ]);
 });
 
-it('by default it will also return routes with missing bindings', function() {
+it('by default it will also return routes with missing bindings', function () {
     setUpRoutes([
         'home',
         'user/{user}',
@@ -105,7 +105,7 @@ it('by default it will also return routes with missing bindings', function() {
     ]);
 });
 
-it('can ignore routes with missing bindings', function() {
+it('can ignore routes with missing bindings', function () {
     setUpRoutes([
         'home',
         'user/{user}',
@@ -120,7 +120,7 @@ it('can ignore routes with missing bindings', function() {
     ]);
 });
 
-it('will not ignore routes whose bindings are not missing', function() {
+it('will not ignore routes whose bindings are not missing', function () {
     setUpRoutes([
         'home',
         'user/{user}',
