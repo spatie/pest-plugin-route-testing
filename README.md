@@ -1,24 +1,50 @@
 # Make sure all routes in your Laravel app are ok
 
-This package provides a simple API to test your application's routes with PestPHP.
+In a typical Laravel application there are many pages that can be accessed by users. It's easy to forget to test all of them. This package makes it easy to test all GET routes in your application.
 
 Here's a quick example:
 
 ```php
 use function Spatie\RouteTesting\routeTesting;
 
-it('can access all GET routes of the API', function () {
-    routeTesting()
-        ->debug()
-        ->including(['/api/*'])
-        ->excluding(['/api/comments/*'])
-        ->bind('post', Post::factory()->create())
-        ->assert(function(Response $response) {
-            // perform custom assertions
-        })
-        ->toReturnSuccessfulResponse();
-});
+routeTesting('all GET routes')
+   ->assertSuccessful();
 ```
+
+This will test all GET routes in your application and ensure they return a 200 HTTP status code. Here's what the output looks like when you run this test in a small app.
+
+// INSERT IMAGE
+
+Instead of `assertSuccessful()` you can use any assertion that is available in Laravel's `TestResponse` class, such as `assertRedirect()`, `assertNotFound()`, `assertForbidden()`, etc.
+
+You can also test specific routes:
+
+```php
+use function Spatie\RouteTesting\routeTesting;
+
+routeTesting('all blog routes')
+    ->include('blog*')
+    ->assertSuccessful();
+```
+
+If you there are routes that have route model bindings, the package will skip the test for those routes. Let's assume you have a route defined as  `user/{user}`. Here's what the output looks like when you run the test.
+
+// INSERT IMAGE
+
+If you want to test a route with a route model binding, you can provide the model using the `bind` method.
+
+```php
+use function Spatie\RouteTesting\routeTesting;
+use App\Models\User;
+
+routeTesting('all blog routes')
+    ->bind('user', User::factory()->create())
+    ->assertSuccessful();
+```
+
+When you run the test now, the package will use the provided model to test the route.
+
+// INSERT IMAGE
 
 ## Support us
 
