@@ -55,7 +55,7 @@ class RouteResolver
 
         return $this;
     }
-    
+
     public function bindingNames(array $bindingNames): self
     {
         $this->bindingNames = $bindingNames;
@@ -66,7 +66,7 @@ class RouteResolver
     public function exceptRoutesWithMissingBindings(): self
     {
         $this->exceptRoutesWithMissingBindings = true;
-        
+
         return $this;
     }
 
@@ -87,16 +87,17 @@ class RouteResolver
 
                 return true;
             })
-            ->when($this->exceptRoutesWithMissingBindings, function(Collection $routes) {
-                  return $routes->filter(function($route) {
-                      $uriBindings = $this->getBindingsFromUrl($route['uri']);
-                      
-                      if (count($uriBindings) === 0) {
-                          return true;
-                      }
-                      dump($uriBindings,  $this->bindingNames);
-                      return count(array_diff($uriBindings, $this->bindingNames)) === 0;
-                  });
+            ->when($this->exceptRoutesWithMissingBindings, function (Collection $routes) {
+                return $routes->filter(function ($route) {
+                    $uriBindings = $this->getBindingsFromUrl($route['uri']);
+
+                    if (count($uriBindings) === 0) {
+                        return true;
+                    }
+                    dump($uriBindings, $this->bindingNames);
+
+                    return count(array_diff($uriBindings, $this->bindingNames)) === 0;
+                });
             })
             ->toArray();
     }
