@@ -64,6 +64,37 @@ composer require spatie/pest-plugin-route-testing
 
 ## Usage
 
+You can use the `routeTesting` function to test all routes in your application.
+
+```php
+use function Spatie\RouteTesting\routeTesting;
+
+routeTesting('all routes')
+    ->assertSuccessful();
+```
+
+This will test all GET routes in your application and ensure they return a 200 HTTP status code. Here's what the output looks like when you run this test in a small app.
+
+// INSERT IMAGE
+
+Instead of `assertSuccessful()` you can use any assertion that is available in Laravel's `TestResponse` class, such as `assertRedirect()`, `assertNotFound()`, `assertForbidden()`, etc.
+
+### Testing specific routes
+
+// Coming soon
+
+### Excluding routes
+
+// Coming soon
+
+### Binding route model bindings
+
+// Coming soon
+
+### Ignoring routes with missing route model bindings
+
+// Coming soon
+
 ## Testing
 
 ```bash
