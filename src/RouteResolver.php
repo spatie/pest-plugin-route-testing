@@ -4,7 +4,7 @@ namespace Spatie\RouteTesting;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
-use Symfony\Component\Process\Process;
+use Illuminate\Support\Facades\Process;
 
 class RouteResolver
 {
@@ -29,10 +29,9 @@ class RouteResolver
     /** @return Collection<int, array{method: string, uri: string}> */
     protected function resolveFullRouteList(): Collection
     {
-        $process = Process::fromShellCommandline('php artisan route:list --json --method=GET');
-        $process->run();
+        $result = Process::run('php artisan route:list --json --method=GET');
 
-        $routes = json_decode($process->getOutput(), true);
+        $routes = json_decode($result->output(), true);
 
         return collect($routes)->flatMap(
             fn ($route) => Str::of($route['method'])
@@ -55,7 +54,7 @@ class RouteResolver
 
         return $this;
     }
-    
+
     public function bindingNames(array $bindingNames): self
     {
         $this->bindingNames = $bindingNames;
@@ -66,7 +65,7 @@ class RouteResolver
     public function exceptRoutesWithMissingBindings(): self
     {
         $this->exceptRoutesWithMissingBindings = true;
-        
+
         return $this;
     }
 
@@ -90,7 +89,7 @@ class RouteResolver
             ->when($this->exceptRoutesWithMissingBindings, function(Collection $routes) {
                   return $routes->filter(function($route) {
                       $uriBindings = $this->getBindingsFromUrl($route['uri']);
-                      
+
                       if (count($uriBindings) === 0) {
                           return true;
                       }

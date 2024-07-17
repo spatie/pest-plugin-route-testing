@@ -22,7 +22,7 @@ class RouteTestingTestCall
 
     /** @var array<array{0: string, 1: string}> */
     protected array $assertions = [];
-    
+
     public function __construct(TestCall $testCall)
     {
         $this->testCall = $testCall;
@@ -46,11 +46,11 @@ class RouteTestingTestCall
 
         return $this;
     }
-    
+
     public function ignoreRoutesWithMissingBindings(): self
     {
-        $this->routeResolver->exceptRoutesWithMissingBindings($this->bindingNames);
-        
+        $this->routeResolver->exceptRoutesWithMissingBindings();
+
         $this->with($this->routeResolver->getFilteredRouteList());
 
         return $this;
@@ -73,7 +73,7 @@ class RouteTestingTestCall
         RouteTest::bind($binding, $closure);
 
         $this->bindingNames = array_merge($this->bindingNames, [$binding]);
-        
+
         $this->routeResolver->bindingNames($this->bindingNames);
 
         $this->with($this->routeResolver->getFilteredRouteList());
