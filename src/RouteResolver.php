@@ -8,14 +8,18 @@ use Illuminate\Support\Str;
 
 class RouteResolver
 {
+    /** @var array<int, string>|null */
     protected ?array $paths = null;
 
+    /** @var array<int, string>|null */
     protected ?array $exceptPaths = null;
 
+    /** @var array<int, string> */
     protected array $methods = ['GET'];
 
     protected bool $exceptRoutesWithMissingBindings = false;
 
+    /** @var array<int, string> */
     protected array $bindingNames = [];
 
     /** @var Collection<int, array{method: string, uri: string}> */
@@ -34,7 +38,7 @@ class RouteResolver
         $routes = json_decode($result->output(), true);
 
         return collect($routes)->flatMap(
-            fn ($route) => Str::of($route['method'])
+            fn (array $route) => Str::of($route['method'])
                 ->explode('|')
                 ->intersect($this->methods)
                 ->map(fn ($method) => ['method' => $method, 'uri' => $route['uri']])
@@ -69,17 +73,20 @@ class RouteResolver
         return $this;
     }
 
+    /**
+     * @return array<int, array{method: string, uri: string}>
+     */
     public function getFilteredRouteList(): array
     {
         return $this->fullRouteList
-            ->filter(function ($route) {
+            ->filter(function (array $route) {
                 if ($this->paths) {
                     return collect($this->paths)->contains(fn ($path) => Str::is($path, $route['uri']));
                 }
 
                 return true;
             })
-            ->filter(function ($route) {
+            ->filter(function (array $route) {
                 if ($this->exceptPaths) {
                     return ! collect($this->exceptPaths)->contains(fn ($path) => Str::is($path, $route['uri']));
                 }
@@ -87,7 +94,7 @@ class RouteResolver
                 return true;
             })
             ->when($this->exceptRoutesWithMissingBindings, function (Collection $routes) {
-                return $routes->filter(function ($route) {
+                return $routes->filter(function (array $route) {
                     $uriBindings = $this->getBindingsFromUrl($route['uri']);
 
                     if (count($uriBindings) === 0) {
