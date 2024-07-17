@@ -5,10 +5,10 @@ use Illuminate\Support\Facades\Process;
 use Illuminate\Support\Facades\Route;
 use Spatie\RouteTesting\RouteResolver;
 
-it('can get a route', function() {
-   setUpRoutes([
-       'home',
-   ]);
+it('can get a route', function () {
+    setUpRoutes([
+        'home',
+    ]);
 
     $routes = (new RouteResolver())->getFilteredRouteList();
 
@@ -19,8 +19,8 @@ it('can get a route', function() {
 
 function setUpRoutes(array $urls)
 {
-    foreach($urls as $url) {
-        Route::get($url, function() use ($url) {
+    foreach ($urls as $url) {
+        Route::get($url, function () use ($url) {
             return "Hello {$url}";
         });
     }
@@ -34,4 +34,3 @@ function setUpRoutes(array $urls)
         "php artisan {$command}" => Process::result(output: $output),
     ]);
 }
-
