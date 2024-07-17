@@ -3,8 +3,8 @@
 namespace Spatie\RouteTesting;
 
 use Illuminate\Support\Collection;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Process;
+use Illuminate\Support\Str;
 
 class RouteResolver
 {
@@ -86,16 +86,16 @@ class RouteResolver
 
                 return true;
             })
-            ->when($this->exceptRoutesWithMissingBindings, function(Collection $routes) {
-                  return $routes->filter(function($route) {
-                      $uriBindings = $this->getBindingsFromUrl($route['uri']);
+            ->when($this->exceptRoutesWithMissingBindings, function (Collection $routes) {
+                return $routes->filter(function ($route) {
+                    $uriBindings = $this->getBindingsFromUrl($route['uri']);
 
-                      if (count($uriBindings) === 0) {
-                          return true;
-                      }
+                    if (count($uriBindings) === 0) {
+                        return true;
+                    }
 
-                      return count(array_diff($uriBindings, $this->bindingNames)) === 0;
-                  });
+                    return count(array_diff($uriBindings, $this->bindingNames)) === 0;
+                });
             })
             ->toArray();
     }
