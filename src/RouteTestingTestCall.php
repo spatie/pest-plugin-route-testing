@@ -22,7 +22,7 @@ class RouteTestingTestCall
 
     /** @var array<array{0: string, 1: string}> */
     protected array $assertions = [];
-
+    
     public function __construct(TestCall $testCall)
     {
         $this->testCall = $testCall;
@@ -46,6 +46,15 @@ class RouteTestingTestCall
 
         return $this;
     }
+    
+    public function ignoreRoutesWithMissingBindings(): self
+    {
+        $this->routeResolver->exceptRoutesWithMissingBindings($this->bindingNames);
+        
+        $this->with($this->routeResolver->getFilteredRouteList());
+
+        return $this;
+    }
 
     public function setUp(Closure $closure): static
     {
@@ -64,19 +73,8 @@ class RouteTestingTestCall
         RouteTest::bind($binding, $closure);
 
         $this->bindingNames = array_merge($this->bindingNames, [$binding]);
-
-        $this->with($this->routeResolver->getFilteredRouteList());
-
-        return $this;
-    }
-
-    /**
-     * @param  string[]|array  $path
-     * @return $this
-     */
-    public function exclude(string|array $path): self
-    {
-        $this->routeResolver->exceptPaths(Arr::wrap($path));
+        
+        $this->routeResolver->bindingNames($this->bindingNames);
 
         $this->with($this->routeResolver->getFilteredRouteList());
 
@@ -87,9 +85,22 @@ class RouteTestingTestCall
      * @param  array|string[]  $path
      * @return $this
      */
-    public function include(array|string $path): self
+    public function include(array|string ...$path): self
     {
         $this->routeResolver->paths(Arr::wrap($path));
+
+        $this->with($this->routeResolver->getFilteredRouteList());
+
+        return $this;
+    }
+
+    /**
+     * @param  string[]|array  $path
+     * @return $this
+     */
+    public function exclude(string|array ...$path): self
+    {
+        $this->routeResolver->exceptPaths(Arr::wrap($path));
 
         $this->with($this->routeResolver->getFilteredRouteList());
 

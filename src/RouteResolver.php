@@ -14,6 +14,10 @@ class RouteResolver
 
     protected array $methods = ['GET'];
 
+    protected bool $exceptRoutesWithMissingBindings = false;
+
+    protected array $bindingNames = [];
+
     /** @var Collection<int, array{method: string, uri: string}> */
     protected Collection $fullRouteList;
 
@@ -51,6 +55,20 @@ class RouteResolver
 
         return $this;
     }
+    
+    public function bindingNames(array $bindingNames): self
+    {
+        $this->bindingNames = $bindingNames;
+
+        return $this;
+    }
+
+    public function exceptRoutesWithMissingBindings(): self
+    {
+        $this->exceptRoutesWithMissingBindings = true;
+        
+        return $this;
+    }
 
     public function getFilteredRouteList(): array
     {
@@ -69,6 +87,26 @@ class RouteResolver
 
                 return true;
             })
+            ->when($this->exceptRoutesWithMissingBindings, function(Collection $routes) {
+                  return $routes->filter(function($route) {
+                      $uriBindings = $this->getBindingsFromUrl($route['uri']);
+                      
+                      if (count($uriBindings) === 0) {
+                          return true;
+                      }
+                      dump($uriBindings,  $this->bindingNames);
+                      return count(array_diff($uriBindings, $this->bindingNames)) === 0;
+                  });
+            })
             ->toArray();
+    }
+
+    protected function getBindingsFromUrl(string $uri): array
+    {
+        $pattern = '/{([^}]*)}/';
+
+        preg_match_all($pattern, $uri, $matches);
+
+        return $matches[1];
     }
 }
