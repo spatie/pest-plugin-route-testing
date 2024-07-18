@@ -46,6 +46,28 @@ When you run the test now, the package will use the provided model to test the r
 
 ![screenshot](https://raw.githubusercontent.com/spatie/pest-plugin-route-testing/main/docs/images/user-ok.png)
 
+### Executing custom code before the test
+
+You can use the `setUp` method to execute code before the route test is run. Here's an example where we log in a user before running the test.
+
+```php
+use function Spatie\RouteTesting\routeTesting;
+
+routeTesting('all admin routes')
+    ->setUp(function ()
+    {
+        $user = User::factory()->create();
+        
+        $this->actingAs($user);
+        
+        // optionally, you can also bind the model
+        
+        $this->bind('user', $user);
+    })
+    ->include('admin*')
+    ->assertSuccessful();
+```
+
 ## Support us
 
 [<img src="https://github-ads.s3.eu-central-1.amazonaws.com/laravel-pdf.jpg?t=1" width="419px" />](https://spatie.be/github-ad-click/laravel-pdf)
