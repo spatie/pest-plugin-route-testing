@@ -168,8 +168,7 @@ routeTesting('all admin routes')
         
         $this->actingAs($user);
         
-        // optionally, you can also bind the model
-        
+        // optionally, you could also bind the model
         $this->bind('user', $user);
     })
     ->include('admin*')
