@@ -42,13 +42,12 @@ class RouteResolver
 
             $output = $result->output();
         } catch (Exception) {
-            $process= SymfonyProcess::fromShellCommandline($command);
+            $process = SymfonyProcess::fromShellCommandline($command);
 
-             $process->run();
+            $process->run();
 
-             $output = $process->getOutput();
+            $output = $process->getOutput();
         }
-
 
         $routes = json_decode($output, true);
 
