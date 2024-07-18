@@ -13,7 +13,7 @@ routeTesting('all GET routes')
 
 This will test all GET routes in your application and ensure they return a 200 HTTP status code. Here's what the output looks like when you run this test in a small app.
 
-// INSERT IMAGE
+![screenshot](https://raw.githubusercontent.com/spatie/pest-plugin-route-testing/main/docs/images/all.png)
 
 Instead of `assertSuccessful()` you can use any assertion that is available in Laravel's `TestResponse` class, such as `assertRedirect()`, `assertNotFound()`, `assertForbidden()`, etc.
 
@@ -29,7 +29,7 @@ routeTesting('all blog routes')
 
 If you there are routes that have route model bindings, the package will skip the test for those routes. Let's assume you have a route defined as  `user/{user}`. Here's what the output looks like when you run the test.
 
-// INSERT IMAGE
+![screenshot](https://raw.githubusercontent.com/spatie/pest-plugin-route-testing/main/docs/images/user-missing.png)
 
 If you want to test a route with a route model binding, you can provide the model using the `bind` method.
 
@@ -44,7 +44,7 @@ routeTesting('all blog routes')
 
 When you run the test now, the package will use the provided model to test the route.
 
-// INSERT IMAGE
+![screenshot](https://raw.githubusercontent.com/spatie/pest-plugin-route-testing/main/docs/images/user-ok.png)
 
 ## Support us
 
