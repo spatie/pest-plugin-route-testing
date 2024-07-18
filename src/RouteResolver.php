@@ -2,9 +2,11 @@
 
 namespace Spatie\RouteTesting;
 
+use Exception;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Process;
 use Illuminate\Support\Str;
+use Symfony\Component\Process\Process as SymfonyProcess;
 
 class RouteResolver
 {
@@ -33,9 +35,22 @@ class RouteResolver
     /** @return Collection<int, array{method: string, uri: string}> */
     protected function resolveFullRouteList(): Collection
     {
-        $result = Process::run('php artisan route:list --json --method=GET');
+        $command = 'php artisan route:list --json --method=GET';
 
-        $routes = json_decode($result->output(), true);
+        try {
+            $result = Process::run($command);
+
+            $output = $result->output();
+        } catch (Exception) {
+            $process= SymfonyProcess::fromShellCommandline($command);
+
+             $process->run();
+
+             $output = $process->getOutput();
+        }
+
+
+        $routes = json_decode($output, true);
 
         return collect($routes)->flatMap(
             fn (array $route) => Str::of($route['method'])
