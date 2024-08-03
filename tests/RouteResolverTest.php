@@ -12,7 +12,7 @@ it('can get a routes', function () {
         'three',
     ]);
 
-    $routes = (new RouteResolver())->getFilteredRouteList();
+    $routes = (new RouteResolver)->getFilteredRouteList();
 
     expect($routes)->toContainRoutes([
         'one',
@@ -29,7 +29,7 @@ it('can can only get specific paths', function () {
         'three',
     ]);
 
-    $routes = (new RouteResolver())
+    $routes = (new RouteResolver)
         ->paths(['one', 'two'])
         ->getFilteredRouteList();
 
@@ -46,7 +46,7 @@ it('can use a wildcard to get specific paths', function () {
         'three',
     ]);
 
-    $routes = (new RouteResolver())
+    $routes = (new RouteResolver)
         ->paths(['one*'])
         ->getFilteredRouteList();
 
@@ -63,7 +63,7 @@ it('can exclude paths', function () {
         'three',
     ]);
 
-    $routes = (new RouteResolver())
+    $routes = (new RouteResolver)
         ->exceptPaths(['two'])
         ->getFilteredRouteList();
 
@@ -81,7 +81,7 @@ it('can exclude paths using a wildcard', function () {
         'three',
     ]);
 
-    $routes = (new RouteResolver())
+    $routes = (new RouteResolver)
         ->exceptPaths(['one*'])
         ->getFilteredRouteList();
 
@@ -97,7 +97,7 @@ it('by default it will also return routes with missing bindings', function () {
         'user/{user}',
     ]);
 
-    $routes = (new RouteResolver())->getFilteredRouteList();
+    $routes = (new RouteResolver)->getFilteredRouteList();
 
     expect($routes)->toContainRoutes([
         'home',
@@ -111,7 +111,7 @@ it('can ignore routes with missing bindings', function () {
         'user/{user}',
     ]);
 
-    $routes = (new RouteResolver())
+    $routes = (new RouteResolver)
         ->exceptRoutesWithMissingBindings()
         ->getFilteredRouteList();
 
@@ -126,7 +126,7 @@ it('will not ignore routes whose bindings are not missing', function () {
         'user/{user}',
     ]);
 
-    $routes = (new RouteResolver())
+    $routes = (new RouteResolver)
         ->exceptRoutesWithMissingBindings()
         ->bindingNames(['user'])
         ->getFilteredRouteList();

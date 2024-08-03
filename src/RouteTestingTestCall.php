@@ -27,7 +27,7 @@ class RouteTestingTestCall
     {
         $this->testCall = $testCall;
 
-        $this->routeResolver = new RouteResolver();
+        $this->routeResolver = new RouteResolver;
 
         $this->with($this->routeResolver->getFilteredRouteList());
 
