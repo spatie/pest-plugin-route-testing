@@ -33,7 +33,7 @@ class RouteTestingTestCall
 
         $this->exclude([
             '_ignition',
-            '_debugbar',
+            '_debugbar*',
             'horizon*',
             'pulse*',
             'sanctum*',
