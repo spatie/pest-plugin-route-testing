@@ -11,6 +11,11 @@ parameters:
 			path: src/Autoload.php
 
 		-
+			message: "#^In method \"Spatie\\\\RouteTesting\\\\RouteResolver\\:\\:resolveFullRouteList\", caught \"Exception\" must be rethrown\\. Either catch a more specific exception or add a \"throw\" clause in the \"catch\" block to propagate the exception\\. More info\\: http\\://bit\\.ly/failloud$#"
+			count: 1
+			path: src/RouteResolver.php
+
+		-
 			message: "#^Method Spatie\\\\RouteTesting\\\\RouteResolver\\:\\:bindingNames\\(\\) has parameter \\$bindingNames with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/RouteResolver.php
