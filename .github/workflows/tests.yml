@@ -17,6 +17,7 @@ jobs:
       matrix:
         os: [ubuntu-latest] # (macos-latest, windows-latest) 2.x-dev is under development
         php: ['8.1', '8.2', '8.3']
+        pest: []
         dependency-version: [prefer-lowest, prefer-stable]
 
     name: PHP ${{ matrix.php }} - ${{ matrix.os }} - ${{ matrix.dependency-version }}
