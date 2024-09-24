@@ -6,6 +6,8 @@ use Closure;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Traits\ForwardsCalls;
 use Illuminate\Testing\TestResponse;
+use Pest\Expectation;
+use Pest\Mixins\Expectation as ExpectationMixin;
 use Pest\PendingCalls\TestCall;
 
 /** @mixin TestResponse|TestCall */
@@ -111,7 +113,11 @@ class RouteTestingTestCall
     {
         // Assertions cannot be chained on the test call yet until the user is done adding bindings and other Pest test methods.
         // We'll capture assertions and apply them to the TestResponse later (in the __destruct method).
-        if (in_array($method, get_class_methods(TestResponse::class))) {
+        if (in_array($method, array_unique([
+            ...get_class_methods(TestResponse::class),
+            ...get_class_methods(Expectation::class),
+            ...get_class_methods(ExpectationMixin::class),
+        ]))) {
             $this->assertions[] = [$method, $parameters];
 
             return $this;
