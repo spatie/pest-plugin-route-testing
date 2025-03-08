@@ -88,7 +88,7 @@ class RouteResolver
     }
 
     /**
-     * @return array<int, array{method: string, uri: string}>
+     * @return array<int, array<int, string>>
      */
     public function getFilteredRouteList(): array
     {
@@ -118,6 +118,7 @@ class RouteResolver
                     return count(array_diff($uriBindings, $this->bindingNames)) === 0;
                 });
             })
+            ->map(fn (array $route) => array_values($route))
             ->toArray();
     }
 

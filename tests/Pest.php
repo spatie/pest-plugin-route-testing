@@ -7,7 +7,7 @@ use Tests\TestCase;
 uses(TestCase::class)->in(__DIR__);
 
 expect()->extend('toContainRoutes', function (array $expectedRoutes) {
-    $routesNames = collect($this->value)->map(fn ($route) => $route['uri'])->values()->toArray();
+    $routesNames = collect($this->value)->map(fn ($route) => $route[1])->values()->toArray();
 
     Assert::assertEqualsCanonicalizing($expectedRoutes, $routesNames);
 });

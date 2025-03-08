@@ -31,7 +31,7 @@ parameters:
 			path: src/RouteResolver.php
 
 		-
-			message: "#^Method Spatie\\\\RouteTesting\\\\RouteResolver\\:\\:getFilteredRouteList\\(\\) should return array\\<int, array\\{method\\: string, uri\\: string\\}\\> but returns array\\<int, mixed\\>\\.$#"
+			message: "#^Method Spatie\\\\RouteTesting\\\\RouteResolver\\:\\:getFilteredRouteList\\(\\) should return array\\<int, array\\<int, string\\>\\> but returns array\\<int, mixed\\>\\.$#"
 			count: 1
 			path: src/RouteResolver.php
 
@@ -66,17 +66,22 @@ parameters:
 			path: src/RouteResolver.php
 
 		-
+			message: "#^Call to an undefined method Illuminate\\\\Contracts\\\\Routing\\\\UrlGenerator\\:\\:toRoute\\(\\)\\.$#"
+			count: 1
+			path: src/RouteTest.php
+
+		-
 			message: "#^Call to an undefined method Pest\\\\PendingCalls\\\\TestCall\\:\\:defer\\(\\)\\.$#"
 			count: 1
 			path: src/RouteTest.php
 
 		-
-			message: "#^Cannot call method toRoute\\(\\) on Illuminate\\\\Contracts\\\\Routing\\\\UrlGenerator\\|string\\.$#"
+			message: "#^Method Spatie\\\\RouteTesting\\\\RouteTest\\:\\:test\\(\\) has parameter \\$assertions with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/RouteTest.php
 
 		-
-			message: "#^Method Spatie\\\\RouteTesting\\\\RouteTest\\:\\:test\\(\\) has parameter \\$assertions with no value type specified in iterable type array\\.$#"
+			message: "#^PHPDoc tag @var for variable \\$testResponse contains generic class Illuminate\\\\Testing\\\\TestResponse but does not specify its types\\: TResponse$#"
 			count: 1
 			path: src/RouteTest.php
 
