@@ -111,7 +111,7 @@ class RouteTestingTestCall
     {
         // Assertions cannot be chained on the test call yet until the user is done adding bindings and other Pest test methods.
         // We'll capture assertions and apply them to the TestResponse later (in the __destruct method).
-        if (in_array($method, get_class_methods(TestResponse::class)) || $method === 'toMatchSnapshot') {
+        if (in_array($method, get_class_methods(TestResponse::class)) || $method === 'toMatchSnapshot' || TestResponse::hasMacro($method)) {
             $this->assertions[] = [$method, $parameters];
 
             return $this;
