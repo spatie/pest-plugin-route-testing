@@ -1,12 +1,11 @@
 includes:
     - phpstan-baseline.neon
-    - vendor/thecodingmachine/phpstan-strict-rules/phpstan-strict-rules.neon
+    - vendor/phpstan/phpstan-strict-rules/rules.neon
 
 parameters:
     level: max
     paths:
         - src
 
-    checkMissingIterableValueType: true
     reportUnmatchedIgnoredErrors: true
     treatPhpDocTypesAsCertain: false
