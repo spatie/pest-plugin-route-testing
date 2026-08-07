@@ -9,7 +9,7 @@ use Pest\Plugin;
 Plugin::uses(RouteTestable::class);
 
 if (! function_exists('routeTesting')) {
-    function routeTesting(string $description)
+    function routeTesting(string $description): RouteTestingTestCall
     {
         return new RouteTestingTestCall(test($description));
     }

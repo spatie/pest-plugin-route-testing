@@ -8,7 +8,10 @@ use Illuminate\Support\Traits\ForwardsCalls;
 use Illuminate\Testing\TestResponse;
 use Pest\PendingCalls\TestCall;
 
-/** @mixin TestResponse|TestCall */
+/**
+ * @mixin TestResponse
+ * @mixin TestCall
+ */
 class RouteTestingTestCall
 {
     use ForwardsCalls;
